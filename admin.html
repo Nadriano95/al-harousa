@@ -1,0 +1,843 @@
+<!DOCTYPE html>
+<html lang="fr">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>Administration — AL-HAROUSA</title>
+<meta name="robots" content="noindex, nofollow">
+
+<link rel="preconnect" href="https://fonts.googleapis.com">
+<link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+<link href="https://fonts.googleapis.com/css2?family=Oswald:wght@400;500;600;700&family=Jost:wght@300;400;500;600&display=swap" rel="stylesheet">
+
+<style>
+  :root{
+    --black: #0b0b0a;
+    --black-soft: #141312;
+    --panel: #1a1815;
+    --white: #f7f5f0;
+    --white-dim: #cfc9bc;
+    --gold: #c9a867;
+    --gold-soft: #dcc48f;
+    --taupe: #8a8378;
+    --line: rgba(247,245,240,0.14);
+    --red: #d9694f;
+    --green: #7fae6f;
+    --display: 'Oswald', sans-serif;
+    --body: 'Jost', sans-serif;
+  }
+  *{margin:0;padding:0;box-sizing:border-box;}
+  body{
+    background:var(--black);
+    color:var(--white);
+    font-family:var(--body);
+    font-weight:300;
+    min-height:100vh;
+    -webkit-font-smoothing:antialiased;
+  }
+  a{color:inherit;}
+  img{display:block;max-width:100%;}
+
+  header{
+    position:sticky;top:0;z-index:50;
+    display:flex;align-items:center;justify-content:space-between;
+    padding:18px 28px;
+    background:rgba(11,11,10,0.95);
+    border-bottom:1px solid var(--line);
+    backdrop-filter:blur(8px);
+  }
+  .logo{
+    font-family:var(--display);font-weight:600;letter-spacing:0.08em;
+    font-size:18px;text-transform:uppercase;
+  }
+  .logo span{color:var(--gold);}
+  .logo small{
+    display:block;font-family:var(--body);font-size:11px;letter-spacing:0.1em;
+    text-transform:uppercase;color:var(--taupe);font-weight:300;margin-top:2px;
+  }
+  .header-actions{display:flex;align-items:center;gap:14px;}
+  .pill{
+    font-size:11px;letter-spacing:0.06em;text-transform:uppercase;
+    padding:6px 12px;border-radius:20px;border:1px solid var(--line);
+    color:var(--taupe);
+  }
+  .pill.connected{border-color:var(--green);color:var(--green);}
+  .pill.disconnected{border-color:var(--red);color:var(--red);}
+
+  .btn{
+    font-family:var(--display);font-size:12px;letter-spacing:0.1em;text-transform:uppercase;
+    padding:11px 20px;border:1px solid transparent;cursor:pointer;transition:all .2s ease;
+    background:none;color:var(--white);
+  }
+  .btn-gold{background:var(--gold);color:var(--black);}
+  .btn-gold:hover{background:var(--gold-soft);}
+  .btn-outline{border-color:var(--white-dim);}
+  .btn-outline:hover{border-color:var(--gold);color:var(--gold);}
+  .btn-danger{border-color:var(--red);color:var(--red);}
+  .btn-danger:hover{background:var(--red);color:var(--black);}
+  .btn-small{padding:7px 14px;font-size:10.5px;}
+  .btn:disabled{opacity:0.4;cursor:not-allowed;}
+
+  .wrap{max-width:1180px;margin:0 auto;padding:0 28px;}
+
+  /* ---------- Login gate ---------- */
+  .gate{
+    min-height:80vh;display:flex;align-items:center;justify-content:center;
+    padding:60px 24px;
+  }
+  .gate-card{
+    max-width:460px;width:100%;
+    background:var(--panel);border:1px solid var(--line);
+    padding:44px;
+  }
+  .gate-card h1{
+    font-family:var(--display);text-transform:uppercase;font-size:24px;
+    letter-spacing:0.02em;margin-bottom:10px;font-weight:600;
+  }
+  .gate-card > p{font-size:14px;color:var(--taupe);line-height:1.7;margin-bottom:28px;}
+  .field{margin-bottom:18px;}
+  .field label{
+    display:block;font-size:11px;letter-spacing:0.08em;text-transform:uppercase;
+    color:var(--taupe);margin-bottom:8px;
+  }
+  .field input, .field select, .field textarea{
+    width:100%;background:var(--black-soft);border:1px solid var(--line);
+    color:var(--white);font-family:var(--body);font-size:14px;padding:11px 12px;
+    outline:none;transition:border-color .2s ease;
+  }
+  .field input:focus, .field select:focus, .field textarea:focus{border-color:var(--gold);}
+  .field small{display:block;margin-top:7px;font-size:11.5px;color:var(--taupe);line-height:1.6;}
+  .help-box{
+    background:rgba(201,168,103,0.07);border:1px solid rgba(201,168,103,0.25);
+    padding:16px 18px;font-size:12.5px;color:var(--white-dim);line-height:1.7;margin-bottom:24px;
+  }
+  .help-box a{color:var(--gold);text-decoration:underline;}
+  .help-box ol{margin:8px 0 0 18px;}
+  .status-msg{
+    margin-top:16px;padding:12px 14px;font-size:13px;line-height:1.6;display:none;
+  }
+  .status-msg.show{display:block;}
+  .status-msg.error{background:rgba(217,105,79,0.12);border:1px solid var(--red);color:#f0a894;}
+  .status-msg.success{background:rgba(127,174,111,0.12);border:1px solid var(--green);color:#a8cf9a;}
+  .status-msg.loading{background:rgba(201,168,103,0.1);border:1px solid var(--gold);color:var(--gold-soft);}
+
+  /* ---------- Main dashboard ---------- */
+  #dashboard{display:none;}
+  #dashboard.show{display:block;}
+  .tabs{
+    display:flex;gap:2px;margin:28px 0 0;border-bottom:1px solid var(--line);
+    overflow-x:auto;
+  }
+  .tab{
+    font-family:var(--display);font-size:12px;letter-spacing:0.08em;text-transform:uppercase;
+    padding:14px 20px;color:var(--taupe);cursor:pointer;white-space:nowrap;
+    border-bottom:2px solid transparent;transition:color .2s ease;
+  }
+  .tab:hover{color:var(--white);}
+  .tab.active{color:var(--gold);border-bottom-color:var(--gold);}
+
+  .panel{display:none;padding:34px 0 80px;}
+  .panel.active{display:block;}
+
+  .panel-head{
+    display:flex;align-items:center;justify-content:space-between;
+    margin-bottom:24px;flex-wrap:wrap;gap:14px;
+  }
+  .panel-head h2{
+    font-family:var(--display);text-transform:uppercase;font-size:22px;
+    letter-spacing:0.02em;font-weight:600;
+  }
+  .panel-head p{font-size:13px;color:var(--taupe);margin-top:6px;}
+
+  .item-grid{
+    display:grid;grid-template-columns:repeat(auto-fill, minmax(280px,1fr));
+    gap:18px;
+  }
+  .item-card{
+    background:var(--panel);border:1px solid var(--line);
+    overflow:hidden;
+  }
+  .item-media{
+    position:relative;aspect-ratio:4/3;background:#0f0e0d;overflow:hidden;
+  }
+  .item-media img{width:100%;height:100%;object-fit:cover;}
+  .item-media .upload-overlay{
+    position:absolute;inset:0;display:flex;align-items:center;justify-content:center;
+    background:rgba(11,11,10,0.55);opacity:0;transition:opacity .2s ease;cursor:pointer;
+  }
+  .item-media:hover .upload-overlay{opacity:1;}
+  .upload-overlay span{
+    font-family:var(--display);font-size:11px;letter-spacing:0.1em;text-transform:uppercase;
+    color:var(--white);border:1px solid var(--white);padding:8px 16px;
+  }
+  .item-media input[type=file]{display:none;}
+  .item-body{padding:16px 18px 18px;}
+  .item-row{display:flex;gap:10px;margin-bottom:10px;}
+  .item-row label{
+    font-size:10px;letter-spacing:0.06em;text-transform:uppercase;color:var(--taupe);
+    display:block;margin-bottom:5px;
+  }
+  .item-row .field-half{flex:1;}
+  .item-body input, .item-body textarea{
+    width:100%;background:var(--black-soft);border:1px solid var(--line);
+    color:var(--white);font-family:var(--body);font-size:13px;padding:8px 10px;
+    outline:none;transition:border-color .2s ease;
+  }
+  .item-body input:focus, .item-body textarea:focus{border-color:var(--gold);}
+  .item-body textarea{resize:vertical;min-height:52px;}
+  .item-foot{
+    display:flex;justify-content:space-between;align-items:center;
+    margin-top:14px;padding-top:14px;border-top:1px solid var(--line);
+  }
+  .item-foot .id-tag{font-size:10.5px;color:var(--taupe);}
+  .checkbox-row{display:flex;align-items:center;gap:8px;font-size:12.5px;color:var(--white-dim);}
+  .checkbox-row input{width:auto;accent-color:var(--gold);}
+
+  .add-card{
+    border:1px dashed var(--line);background:transparent;
+    display:flex;align-items:center;justify-content:center;
+    min-height:220px;cursor:pointer;color:var(--taupe);
+    font-family:var(--display);font-size:13px;letter-spacing:0.08em;text-transform:uppercase;
+    transition:all .2s ease;
+  }
+  .add-card:hover{border-color:var(--gold);color:var(--gold);}
+
+  .save-bar{
+    position:sticky;bottom:0;left:0;right:0;
+    background:rgba(11,11,10,0.97);backdrop-filter:blur(10px);
+    border-top:1px solid var(--line);
+    padding:16px 28px;display:flex;justify-content:flex-end;align-items:center;gap:16px;
+    z-index:40;
+  }
+  .save-bar .status-msg{margin:0;flex:1;}
+  .save-bar .status-msg.show{display:flex;align-items:center;}
+
+  .section-meta{
+    display:grid;grid-template-columns:1fr 1fr;gap:14px;margin-bottom:24px;
+    background:var(--panel);border:1px solid var(--line);padding:20px;
+  }
+  .section-meta .field{margin-bottom:0;}
+  .section-meta .full{grid-column:1/-1;}
+
+  @media (max-width:720px){
+    .section-meta{grid-template-columns:1fr;}
+    header{padding:14px 18px;}
+    .wrap{padding:0 18px;}
+  }
+</style>
+</head>
+<body>
+
+<header>
+  <div class="logo">AL<span>-</span>HAROUSA<small>Panneau d'administration</small></div>
+  <div class="header-actions">
+    <span class="pill disconnected" id="connPill">Non connecté</span>
+    <button class="btn btn-outline btn-small" id="logoutBtn" style="display:none;">Se déconnecter</button>
+  </div>
+</header>
+
+<!-- ================= LOGIN GATE ================= -->
+<div class="gate" id="gate">
+  <div class="gate-card">
+    <h1>Connexion</h1>
+    <p>Connecte-toi avec un accès GitHub pour modifier les produits et photos du site directement en ligne.</p>
+
+    <div class="help-box">
+      Il te faut un <strong>token d'accès personnel GitHub</strong> (gratuit, à créer une seule fois) :
+      <ol>
+        <li>Va sur <a href="https://github.com/settings/personal-access-tokens/new" target="_blank" rel="noopener">github.com → Settings → Developer settings → Fine-grained tokens</a></li>
+        <li>Nom : « Admin Al-Harousa », Expiration : 1 an</li>
+        <li>Repository access → « Only select repositories » → choisis ton repo du site</li>
+        <li>Permissions → « Contents » → <strong>Read and write</strong></li>
+        <li>Génère le token et colle-le ci-dessous</li>
+      </ol>
+      Ce token reste uniquement dans ton navigateur — il n'est jamais envoyé ailleurs qu'à GitHub.
+    </div>
+
+    <div class="field">
+      <label for="ghOwner">Propriétaire du repo (ton compte GitHub)</label>
+      <input type="text" id="ghOwner" placeholder="Nadriano95" autocomplete="off">
+    </div>
+    <div class="field">
+      <label for="ghRepo">Nom du repository</label>
+      <input type="text" id="ghRepo" placeholder="al-harousa" autocomplete="off">
+    </div>
+    <div class="field">
+      <label for="ghBranch">Branche</label>
+      <input type="text" id="ghBranch" placeholder="main" value="main" autocomplete="off">
+    </div>
+    <div class="field">
+      <label for="ghToken">Token d'accès personnel</label>
+      <input type="password" id="ghToken" placeholder="github_pat_..." autocomplete="off">
+      <small>Un token « fine-grained » limité à ce seul repo, avec permission Contents en lecture/écriture.</small>
+    </div>
+
+    <button class="btn btn-gold" id="loginBtn" style="width:100%;">Se connecter</button>
+    <div class="status-msg" id="loginStatus"></div>
+  </div>
+</div>
+
+<!-- ================= DASHBOARD ================= -->
+<div id="dashboard">
+  <div class="wrap">
+    <div class="tabs">
+      <div class="tab active" data-tab="canapes">Canapés</div>
+      <div class="tab" data-tab="livings">Livings &amp; tables basses</div>
+      <div class="tab" data-tab="chambres">Chambres</div>
+      <div class="tab" data-tab="finitions">Finitions</div>
+      <div class="tab" data-tab="services">Services sur devis</div>
+      <div class="tab" data-tab="site">Photos principales</div>
+    </div>
+
+    <div class="panel active" data-panel="canapes">
+      <div class="panel-head">
+        <div>
+          <h2>Canapés</h2>
+          <p>Photos, prix et descriptions des canapés affichés sur le site.</p>
+        </div>
+      </div>
+      <div class="section-meta">
+        <div class="field"><label>Sur-titre</label><input type="text" data-meta="canapes.eyebrow"></div>
+        <div class="field"><label>Titre de section</label><input type="text" data-meta="canapes.title"></div>
+        <div class="field full"><label>Note en bas de section</label><input type="text" data-meta="canapes.note"></div>
+      </div>
+      <div class="item-grid" id="grid-canapes"></div>
+    </div>
+
+    <div class="panel" data-panel="livings">
+      <div class="panel-head">
+        <div>
+          <h2>Livings &amp; tables basses</h2>
+          <p>Cette section affiche 2 cartes côte à côte sur le site.</p>
+        </div>
+      </div>
+      <div class="item-grid" id="grid-livings"></div>
+    </div>
+
+    <div class="panel" data-panel="chambres">
+      <div class="panel-head">
+        <div>
+          <h2>Chambres à coucher</h2>
+          <p>Photos, prix et descriptions des chambres affichées sur le site.</p>
+        </div>
+      </div>
+      <div class="section-meta">
+        <div class="field"><label>Sur-titre</label><input type="text" data-meta="chambres.eyebrow"></div>
+        <div class="field"><label>Titre de section</label><input type="text" data-meta="chambres.title"></div>
+        <div class="field full"><label>Note en bas de section</label><input type="text" data-meta="chambres.note"></div>
+      </div>
+      <div class="item-grid" id="grid-chambres"></div>
+    </div>
+
+    <div class="panel" data-panel="finitions">
+      <div class="panel-head">
+        <div>
+          <h2>Salle à manger, carrelage &amp; tapis</h2>
+          <p>Section « Finitions &amp; art de la table ».</p>
+        </div>
+      </div>
+      <div class="section-meta">
+        <div class="field"><label>Sur-titre</label><input type="text" data-meta="finitions.eyebrow"></div>
+        <div class="field"><label>Titre de section</label><input type="text" data-meta="finitions.title"></div>
+      </div>
+      <div class="item-grid" id="grid-finitions"></div>
+    </div>
+
+    <div class="panel" data-panel="services">
+      <div class="panel-head">
+        <div>
+          <h2>Services sur devis</h2>
+          <p>Électroménager, plomberie, mobilier bureautique… sans photo, juste titre + description.</p>
+        </div>
+      </div>
+      <div class="item-grid" id="grid-services"></div>
+    </div>
+
+    <div class="panel" data-panel="site">
+      <div class="panel-head">
+        <div>
+          <h2>Photos principales</h2>
+          <p>La grande photo d'accueil et celle de la section contact.</p>
+        </div>
+      </div>
+      <div class="item-grid" id="grid-site"></div>
+    </div>
+  </div>
+
+  <div class="save-bar">
+    <div class="status-msg" id="saveStatus"></div>
+    <button class="btn btn-outline" id="reloadBtn">Recharger</button>
+    <button class="btn btn-gold" id="saveBtn">Enregistrer les modifications</button>
+  </div>
+</div>
+
+<script>
+/* ============================================================
+   AL-HAROUSA — Admin panel
+   Talks directly to the GitHub Contents API from the browser.
+   The token is stored only in this browser's localStorage and
+   is sent only to api.github.com over HTTPS.
+   ============================================================ */
+
+const LS_KEY = 'alharousa_admin_creds';
+let creds = null;          // { owner, repo, branch, token }
+let productsData = null;   // parsed products.json
+let productsSha = null;    // sha of products.json for updates
+let pendingImageUploads = {}; // itemPath -> {file, targetImagePath}
+let dirty = false;
+
+const $ = (sel, root=document) => root.querySelector(sel);
+const $$ = (sel, root=document) => Array.from(root.querySelectorAll(sel));
+
+function slugify(str){
+  return (str || 'produit')
+    .toLowerCase()
+    .normalize('NFD').replace(/[\u0300-\u036f]/g, '')
+    .replace(/[^a-z0-9]+/g, '-')
+    .replace(/(^-|-$)/g, '') || 'produit';
+}
+
+function showStatus(el, type, msg){
+  el.className = 'status-msg show ' + type;
+  el.textContent = msg;
+}
+function clearStatus(el){
+  el.className = 'status-msg';
+  el.textContent = '';
+}
+
+/* ---------------- GitHub API helpers ---------------- */
+
+async function ghRequest(path, options = {}){
+  const url = `https://api.github.com/repos/${creds.owner}/${creds.repo}/contents/${path}`;
+  const res = await fetch(url, {
+    ...options,
+    headers: {
+      'Authorization': `Bearer ${creds.token}`,
+      'Accept': 'application/vnd.github+json',
+      'X-GitHub-Api-Version': '2022-11-28',
+      ...(options.headers || {})
+    }
+  });
+  return res;
+}
+
+async function ghGetFile(path){
+  const res = await ghRequest(`${encodeURI(path)}?ref=${encodeURIComponent(creds.branch)}`);
+  if(res.status === 404) return null;
+  if(!res.ok) throw new Error(`Erreur GitHub (${res.status}) en lisant ${path}`);
+  return res.json(); // { content(base64), sha, ... }
+}
+
+async function ghPutFile(path, base64Content, sha, message){
+  const body = {
+    message,
+    content: base64Content,
+    branch: creds.branch
+  };
+  if(sha) body.sha = sha;
+  const res = await ghRequest(encodeURI(path), {
+    method: 'PUT',
+    body: JSON.stringify(body)
+  });
+  if(!res.ok){
+    const err = await res.json().catch(()=>({}));
+    throw new Error(err.message || `Erreur GitHub (${res.status}) en écrivant ${path}`);
+  }
+  return res.json();
+}
+
+function utf8ToBase64(str){
+  return btoa(unescape(encodeURIComponent(str)));
+}
+
+/* ---------------- Image handling ---------------- */
+
+function fileToResizedBase64(file, maxWidth = 1600, quality = 0.82){
+  return new Promise((resolve, reject) => {
+    const reader = new FileReader();
+    reader.onerror = () => reject(new Error('Lecture du fichier impossible'));
+    reader.onload = () => {
+      const img = new Image();
+      img.onerror = () => reject(new Error('Image invalide'));
+      img.onload = () => {
+        let { width, height } = img;
+        if(width > maxWidth){
+          height = Math.round(height * (maxWidth / width));
+          width = maxWidth;
+        }
+        const canvas = document.createElement('canvas');
+        canvas.width = width; canvas.height = height;
+        const ctx = canvas.getContext('2d');
+        ctx.drawImage(img, 0, 0, width, height);
+        const dataUrl = canvas.toDataURL('image/jpeg', quality);
+        resolve(dataUrl.split(',')[1]); // strip "data:image/jpeg;base64,"
+      };
+      img.src = reader.result;
+    };
+    reader.readAsDataURL(file);
+  });
+}
+
+/* ---------------- Auth / bootstrap ---------------- */
+
+function loadStoredCreds(){
+  try{
+    const raw = localStorage.getItem(LS_KEY);
+    return raw ? JSON.parse(raw) : null;
+  }catch(e){ return null; }
+}
+function storeCreds(c){ localStorage.setItem(LS_KEY, JSON.stringify(c)); }
+function clearCreds(){ localStorage.removeItem(LS_KEY); }
+
+async function testConnection(){
+  const res = await ghRequest('');
+  if(res.status === 401) throw new Error('Token invalide ou expiré.');
+  if(res.status === 403) throw new Error('Ce token n\'a pas la permission d\'accéder à ce repository.');
+  if(res.status === 404) throw new Error('Repository introuvable — vérifie le propriétaire et le nom du repo.');
+  if(!res.ok) throw new Error(`Connexion impossible (code ${res.status}).`);
+}
+
+async function connect(c){
+  creds = c;
+  const statusEl = $('#loginStatus');
+  showStatus(statusEl, 'loading', 'Connexion en cours…');
+  try{
+    await testConnection();
+    storeCreds(c);
+    $('#connPill').textContent = `Connecté — ${c.owner}/${c.repo}`;
+    $('#connPill').className = 'pill connected';
+    $('#logoutBtn').style.display = 'inline-block';
+    $('#gate').style.display = 'none';
+    $('#dashboard').classList.add('show');
+    clearStatus(statusEl);
+    await loadAllData();
+  }catch(err){
+    creds = null;
+    showStatus(statusEl, 'error', err.message);
+  }
+}
+
+$('#loginBtn').addEventListener('click', () => {
+  const c = {
+    owner: $('#ghOwner').value.trim(),
+    repo: $('#ghRepo').value.trim(),
+    branch: $('#ghBranch').value.trim() || 'main',
+    token: $('#ghToken').value.trim()
+  };
+  if(!c.owner || !c.repo || !c.token){
+    showStatus($('#loginStatus'), 'error', 'Merci de remplir le propriétaire, le repo et le token.');
+    return;
+  }
+  connect(c);
+});
+
+$('#logoutBtn').addEventListener('click', () => {
+  clearCreds();
+  creds = null;
+  location.reload();
+});
+
+/* ---------------- Data loading ---------------- */
+
+async function loadAllData(){
+  showStatus($('#saveStatus'), 'loading', 'Chargement des données…');
+  try{
+    const file = await ghGetFile('data/products.json');
+    if(!file) throw new Error('data/products.json introuvable dans le repo.');
+    productsSha = file.sha;
+    productsData = JSON.parse(decodeURIComponent(escape(atob(file.content.replace(/\n/g,'')))));
+    renderAll();
+    clearStatus($('#saveStatus'));
+  }catch(err){
+    showStatus($('#saveStatus'), 'error', err.message);
+  }
+}
+
+function rawImageUrl(path){
+  // cache-busted raw URL for previews
+  return `https://raw.githubusercontent.com/${creds.owner}/${creds.repo}/${creds.branch}/${path}?t=${Date.now()}`;
+}
+
+/* ---------------- Rendering ---------------- */
+
+function renderAll(){
+  ['canapes','livings','chambres','finitions'].forEach(renderProductSection);
+  renderServices();
+  renderSiteImages();
+  bindMetaFields();
+}
+
+function bindMetaFields(){
+  $$('[data-meta]').forEach(input => {
+    const [section, field] = input.dataset.meta.split('.');
+    input.value = (productsData.sections[section] && productsData.sections[section][field]) || '';
+    input.addEventListener('input', () => {
+      productsData.sections[section][field] = input.value;
+      markDirty();
+    });
+  });
+}
+
+function itemCardTemplate(item, section, index){
+  const isService = section === 'services';
+  const imgPath = item.image || '';
+  const previewSrc = imgPath ? rawImageUrl(imgPath) : '';
+  return `
+  <div class="item-card" data-section="${section}" data-index="${index}">
+    ${isService ? '' : `
+    <div class="item-media">
+      <img src="${previewSrc}" alt="" onerror="this.style.opacity=0.15">
+      <label class="upload-overlay">
+        <span>Changer la photo</span>
+        <input type="file" accept="image/*" class="img-input">
+      </label>
+    </div>`}
+    <div class="item-body">
+      <div class="item-row">
+        <div class="field-half">
+          <label>Titre</label>
+          <input type="text" class="f-title" value="${escapeAttr(item.title)}">
+        </div>
+        ${isService ? '' : `
+        <div class="field-half" style="max-width:120px;">
+          <label>Prix</label>
+          <input type="text" class="f-price" value="${escapeAttr(item.price)}">
+        </div>`}
+      </div>
+      <div class="item-row">
+        <div class="field-half">
+          <label>Description</label>
+          <textarea class="f-desc">${escapeAttr(item.description)}</textarea>
+        </div>
+      </div>
+      ${isService ? `
+      <div class="item-row">
+        <label class="checkbox-row"><input type="checkbox" class="f-partner" ${item.partner ? 'checked' : ''}> En partenariat</label>
+      </div>` : `
+      <div class="item-row">
+        <div class="field-half">
+          <label>Mention (sous le prix)</label>
+          <input type="text" class="f-footnote" value="${escapeAttr(item.footnote)}">
+        </div>
+        <div class="field-half">
+          <label>Bouton</label>
+          <input type="text" class="f-cta" value="${escapeAttr(item.cta)}">
+        </div>
+      </div>`}
+      <div class="item-foot">
+        <span class="id-tag">#${escapeAttr(item.id)}</span>
+        <button class="btn btn-danger btn-small btn-remove">Supprimer</button>
+      </div>
+    </div>
+  </div>`;
+}
+
+function escapeAttr(str){
+  return (str === null || str === undefined) ? '' : String(str).replace(/"/g,'&quot;');
+}
+
+function renderProductSection(sectionKey){
+  const grid = $('#grid-' + sectionKey);
+  const section = productsData.sections[sectionKey];
+  if(!grid || !section) return;
+  grid.innerHTML = section.items.map((item, i) => itemCardTemplate(item, sectionKey, i)).join('')
+    + `<div class="add-card" data-add="${sectionKey}">+ Ajouter un produit</div>`;
+  wireItemCard(grid, sectionKey);
+}
+
+function renderServices(){
+  const grid = $('#grid-services');
+  const items = productsData.services.items;
+  grid.innerHTML = items.map((item, i) => itemCardTemplate(item, 'services', i)).join('')
+    + `<div class="add-card" data-add="services">+ Ajouter un service</div>`;
+  wireItemCard(grid, 'services');
+}
+
+function renderSiteImages(){
+  const grid = $('#grid-site');
+  const site = productsData.site;
+  grid.innerHTML = `
+    <div class="item-card" data-site-field="heroImage">
+      <div class="item-media">
+        <img src="${rawImageUrl(site.heroImage)}" alt="" onerror="this.style.opacity=0.15">
+        <label class="upload-overlay"><span>Changer la photo</span><input type="file" accept="image/*" class="img-input-site"></label>
+      </div>
+      <div class="item-body"><div class="item-row"><div class="field-half"><label>Photo d'accueil (hero)</label><p style="font-size:12.5px;color:var(--taupe);">Grande image en haut du site.</p></div></div></div>
+    </div>
+    <div class="item-card" data-site-field="contactImage">
+      <div class="item-media">
+        <img src="${rawImageUrl(site.contactImage)}" alt="" onerror="this.style.opacity=0.15">
+        <label class="upload-overlay"><span>Changer la photo</span><input type="file" accept="image/*" class="img-input-site"></label>
+      </div>
+      <div class="item-body"><div class="item-row"><div class="field-half"><label>Photo de contact</label><p style="font-size:12.5px;color:var(--taupe);">Image affichée dans la section contact.</p></div></div></div>
+    </div>`;
+
+  $$('.img-input-site', grid).forEach(input => {
+    input.addEventListener('change', (e) => {
+      const file = e.target.files[0];
+      if(!file) return;
+      const card = e.target.closest('.item-card');
+      const field = card.dataset.siteField;
+      const targetPath = productsData.site[field];
+      pendingImageUploads[`site:${field}`] = { file, targetImagePath: targetPath };
+      const img = card.querySelector('img');
+      img.src = URL.createObjectURL(file);
+      markDirty();
+    });
+  });
+}
+
+function wireItemCard(grid, sectionKey){
+  $$('.item-card', grid).forEach(card => {
+    const index = parseInt(card.dataset.index, 10);
+    const isService = sectionKey === 'services';
+    const items = isService ? productsData.services.items : productsData.sections[sectionKey].items;
+    const item = items[index];
+
+    const titleEl = $('.f-title', card);
+    titleEl.addEventListener('input', () => { item.title = titleEl.value; markDirty(); });
+
+    const descEl = $('.f-desc', card);
+    descEl.addEventListener('input', () => { item.description = descEl.value; markDirty(); });
+
+    const priceEl = $('.f-price', card);
+    if(priceEl) priceEl.addEventListener('input', () => { item.price = priceEl.value; markDirty(); });
+
+    const footEl = $('.f-footnote', card);
+    if(footEl) footEl.addEventListener('input', () => { item.footnote = footEl.value; markDirty(); });
+
+    const ctaEl = $('.f-cta', card);
+    if(ctaEl) ctaEl.addEventListener('input', () => { item.cta = ctaEl.value; markDirty(); });
+
+    const partnerEl = $('.f-partner', card);
+    if(partnerEl) partnerEl.addEventListener('change', () => { item.partner = partnerEl.checked; markDirty(); });
+
+    const imgInput = $('.img-input', card);
+    if(imgInput){
+      imgInput.addEventListener('change', (e) => {
+        const file = e.target.files[0];
+        if(!file) return;
+        const slug = slugify(item.title) || item.id;
+        const targetImagePath = item.image || `assets/products/${slug}-${Date.now()}.jpg`;
+        item.image = targetImagePath;
+        pendingImageUploads[`${sectionKey}:${item.id}`] = { file, targetImagePath };
+        const img = $('.item-media img', card);
+        img.src = URL.createObjectURL(file);
+        markDirty();
+      });
+    }
+
+    const removeBtn = $('.btn-remove', card);
+    removeBtn.addEventListener('click', () => {
+      if(!confirm(`Supprimer « ${item.title} » ?`)) return;
+      items.splice(index, 1);
+      markDirty();
+      if(isService) renderServices(); else renderProductSection(sectionKey);
+    });
+  });
+
+  const addCard = $('.add-card', grid);
+  if(addCard){
+    addCard.addEventListener('click', () => {
+      const isService = sectionKey === 'services';
+      const id = slugify('nouveau-' + Date.now().toString().slice(-5));
+      if(isService){
+        productsData.services.items.push({ id, title: 'Nouveau service', description: 'Description à compléter.', partner: false });
+        renderServices();
+      }else{
+        productsData.sections[sectionKey].items.push({
+          id, image: '', price: 'Sur devis', title: 'Nouveau produit',
+          description: 'Description à compléter.', footnote: '', cta: 'Demander un devis'
+        });
+        renderProductSection(sectionKey);
+      }
+      markDirty();
+    });
+  }
+}
+
+/* ---------------- Tabs ---------------- */
+
+$$('.tab').forEach(tab => {
+  tab.addEventListener('click', () => {
+    $$('.tab').forEach(t => t.classList.remove('active'));
+    $$('.panel').forEach(p => p.classList.remove('active'));
+    tab.classList.add('active');
+    $(`.panel[data-panel="${tab.dataset.tab}"]`).classList.add('active');
+  });
+});
+
+/* ---------------- Save ---------------- */
+
+function markDirty(){
+  dirty = true;
+}
+
+$('#reloadBtn').addEventListener('click', () => {
+  if(dirty && !confirm('Les modifications non enregistrées seront perdues. Recharger quand même ?')) return;
+  pendingImageUploads = {};
+  dirty = false;
+  loadAllData();
+});
+
+$('#saveBtn').addEventListener('click', async () => {
+  const statusEl = $('#saveStatus');
+  const saveBtn = $('#saveBtn');
+  saveBtn.disabled = true;
+  try{
+    const uploads = Object.entries(pendingImageUploads);
+    let done = 0;
+    for(const [key, {file, targetImagePath}] of uploads){
+      showStatus(statusEl, 'loading', `Envoi des photos… (${++done}/${uploads.length})`);
+      const base64 = await fileToResizedBase64(file);
+      const existing = await ghGetFile(targetImagePath);
+      await ghPutFile(
+        targetImagePath,
+        base64,
+        existing ? existing.sha : null,
+        `Mise à jour photo : ${targetImagePath}`
+      );
+    }
+    pendingImageUploads = {};
+
+    showStatus(statusEl, 'loading', 'Enregistrement des produits…');
+    const latest = await ghGetFile('data/products.json'); // avoid sha conflicts
+    const jsonStr = JSON.stringify(productsData, null, 2);
+    await ghPutFile(
+      'data/products.json',
+      utf8ToBase64(jsonStr),
+      latest ? latest.sha : productsSha,
+      'Mise à jour des produits depuis le panneau admin'
+    );
+
+    dirty = false;
+    showStatus(statusEl, 'success', 'Enregistré ✓ — le site se mettra à jour sous 1 à 2 minutes.');
+    await loadAllData();
+  }catch(err){
+    showStatus(statusEl, 'error', 'Erreur : ' + err.message);
+  }finally{
+    saveBtn.disabled = false;
+  }
+});
+
+window.addEventListener('beforeunload', (e) => {
+  if(dirty){ e.preventDefault(); e.returnValue = ''; }
+});
+
+/* ---------------- Boot ---------------- */
+
+(function boot(){
+  const stored = loadStoredCreds();
+  if(stored && stored.owner && stored.repo && stored.token){
+    $('#ghOwner').value = stored.owner;
+    $('#ghRepo').value = stored.repo;
+    $('#ghBranch').value = stored.branch || 'main';
+    $('#ghToken').value = stored.token;
+    connect(stored);
+  }
+})();
+</script>
+
+</body>
+</html>
