@@ -6,6 +6,17 @@
 <title>AL-HAROUSA — Mobilier, aménagement &amp; décoration | Moroni</title>
 <meta name="description" content="AL-HAROUSA — Depuis 2005, mobilier, plomberie, quincaillerie, carrelage et décoration à Moroni. Livraison et montage offerts. Catalogue Comores Expo 2026.">
 
+<link rel="icon" type="image/png" sizes="32x32" href="favicon-32.png">
+<link rel="icon" type="image/png" sizes="16x16" href="favicon-16.png">
+<link rel="apple-touch-icon" sizes="180x180" href="apple-touch-icon.png">
+<meta name="theme-color" content="#211f1c">
+
+<meta property="og:type" content="website">
+<meta property="og:title" content="AL-HAROUSA — Mobilier, aménagement & décoration | Moroni">
+<meta property="og:description" content="Depuis 2005, mobilier, plomberie, quincaillerie, carrelage et décoration à Moroni. Livraison et montage offerts.">
+<meta property="og:image" content="hero.jpg">
+<meta name="twitter:card" content="summary_large_image">
+
 <link rel="preconnect" href="https://fonts.googleapis.com">
 <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
 <link href="https://fonts.googleapis.com/css2?family=Oswald:wght@400;500;600;700&family=Jost:wght@300;400;500;600&display=swap" rel="stylesheet">
@@ -307,6 +318,7 @@
     margin-top:60px;
   }
   .grid-products.cols-2{grid-template-columns:repeat(2,1fr);}
+  .grid-products.cols-2 .card:last-child:nth-child(odd){grid-column:1/-1;}
   .card{
     background:var(--black);
     position:relative;
@@ -381,8 +393,10 @@
     letter-spacing:0.1em;
     text-transform:uppercase;
     color:var(--gold);
-    border-bottom:1px solid var(--gold);
-    padding-bottom:2px;
+    text-decoration:underline;
+    text-underline-offset:4px;
+    text-decoration-thickness:1px;
+    text-align:right;
   }
 
   /* ---------- Services strip (simple categories, sur devis) ---------- */
@@ -655,6 +669,7 @@
     .burger{display:block;}
     .about-grid{grid-template-columns:1fr;gap:40px;}
     .grid-products{grid-template-columns:repeat(2,1fr) !important;}
+    .grid-products:not(.cols-2) .card:last-child:nth-child(odd){grid-column:1/-1;}
     .services-grid{grid-template-columns:1fr;}
     .contact-grid{grid-template-columns:1fr;}
     .promise{flex-direction:column;align-items:flex-start;}
