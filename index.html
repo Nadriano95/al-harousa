@@ -685,7 +685,7 @@
 
 <!-- ================= HERO ================= -->
 <section class="hero">
-  <img src="assets/hero.jpg" alt="Intérieur Al-Harousa">
+  <img src="hero.jpg" alt="Intérieur Al-Harousa">
   <div class="hero-content">
     <span class="eyebrow">Moroni · Depuis 2005</span>
     <h1 class="hero-title">L'art d'habiter<br><em>vos espaces</em></h1>
@@ -821,7 +821,7 @@
 <!-- ================= CONTACT ================= -->
 <section class="contact" id="contact">
   <div class="contact-media">
-    <img src="assets/contact.jpg" alt="Showroom Al-Harousa">
+    <img src="contact.jpg" alt="Showroom Al-Harousa">
   </div>
   <div class="contact-panel">
     <div class="wrap">
@@ -944,7 +944,7 @@
 
   async function loadProducts(){
     try{
-      const res = await fetch('data/products.json', {cache:'no-store'});
+      const res = await fetch('products.json', {cache:'no-store'});
       if(!res.ok) throw new Error('products.json introuvable');
       const data = await res.json();
 

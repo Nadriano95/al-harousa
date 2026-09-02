@@ -543,8 +543,8 @@ $('#logoutBtn').addEventListener('click', () => {
 async function loadAllData(){
   showStatus($('#saveStatus'), 'loading', 'Chargement des données…');
   try{
-    const file = await ghGetFile('data/products.json');
-    if(!file) throw new Error('data/products.json introuvable dans le repo.');
+    const file = await ghGetFile('products.json');
+    if(!file) throw new Error('products.json introuvable dans le repo.');
     productsSha = file.sha;
     productsData = JSON.parse(decodeURIComponent(escape(atob(file.content.replace(/\n/g,'')))));
     renderAll();
@@ -719,7 +719,7 @@ function wireItemCard(grid, sectionKey){
         const file = e.target.files[0];
         if(!file) return;
         const slug = slugify(item.title) || item.id;
-        const targetImagePath = item.image || `assets/products/${slug}-${Date.now()}.jpg`;
+        const targetImagePath = item.image || `${slug}-${Date.now()}.jpg`;
         item.image = targetImagePath;
         pendingImageUploads[`${sectionKey}:${item.id}`] = { file, targetImagePath };
         const img = $('.item-media img', card);
@@ -802,10 +802,10 @@ $('#saveBtn').addEventListener('click', async () => {
     pendingImageUploads = {};
 
     showStatus(statusEl, 'loading', 'Enregistrement des produits…');
-    const latest = await ghGetFile('data/products.json'); // avoid sha conflicts
+    const latest = await ghGetFile('products.json'); // avoid sha conflicts
     const jsonStr = JSON.stringify(productsData, null, 2);
     await ghPutFile(
-      'data/products.json',
+      'products.json',
       utf8ToBase64(jsonStr),
       latest ? latest.sha : productsSha,
       'Mise à jour des produits depuis le panneau admin'
