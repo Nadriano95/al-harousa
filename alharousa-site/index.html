@@ -12,14 +12,14 @@
 
 <style>
   :root{
-    --black: #0b0b0a;
-    --black-soft: #141312;
+    --black: #211f1c;
+    --black-soft: #2b2824;
     --white: #f7f5f0;
     --white-dim: #e7e3d9;
     --gold: #c9a867;
     --gold-soft: #dcc48f;
-    --taupe: #8a8378;
-    --line: rgba(247,245,240,0.14);
+    --taupe: #a39b8c;
+    --line: rgba(247,245,240,0.16);
     --display: 'Oswald', sans-serif;
     --body: 'Jost', sans-serif;
   }
@@ -82,11 +82,11 @@
     align-items:center;
     justify-content:space-between;
     padding:22px 32px;
-    background:linear-gradient(180deg, rgba(11,11,10,0.85) 0%, rgba(11,11,10,0) 100%);
+    background:linear-gradient(180deg, rgba(33,31,28,0.85) 0%, rgba(33,31,28,0) 100%);
     transition:background .3s ease, padding .3s ease, backdrop-filter .3s ease;
   }
   header.scrolled{
-    background:rgba(11,11,10,0.92);
+    background:rgba(33,31,28,0.92);
     backdrop-filter:blur(10px);
     padding:14px 32px;
     border-bottom:1px solid var(--line);
@@ -153,7 +153,7 @@
   .hero::before{
     content:'';
     position:absolute;inset:0;
-    background:linear-gradient(180deg, rgba(11,11,10,0.35) 0%, rgba(11,11,10,0.35) 40%, rgba(11,11,10,0.97) 92%);
+    background:linear-gradient(180deg, rgba(33,31,28,0.35) 0%, rgba(33,31,28,0.35) 40%, rgba(33,31,28,0.97) 92%);
     z-index:1;
   }
   .hero-content{
@@ -316,7 +316,7 @@
     position:relative;
     aspect-ratio:4/3;
     overflow:hidden;
-    background:#151412;
+    background:#332f2a;
   }
   .card-media img{
     width:100%;height:100%;
@@ -492,7 +492,7 @@
   .contact-media::after{
     content:'';
     position:absolute;inset:0;
-    background:linear-gradient(180deg, rgba(11,11,10,0) 0%, var(--black) 100%);
+    background:linear-gradient(180deg, rgba(33,31,28,0) 0%, var(--black) 100%);
   }
   .contact-panel{
     background:var(--black);
@@ -586,7 +586,7 @@
     background-repeat:no-repeat;
     background-position:right 4px center;
   }
-  .field select option{background:#141312;color:var(--white);}
+  .field select option{background:#2b2824;color:var(--white);}
   .field textarea{resize:vertical;min-height:80px;font-family:var(--body);}
   .form-submit{
     margin-top:8px;
@@ -740,76 +740,19 @@
 <!-- ================= CANAPES ================= -->
 <section class="section-pad" id="canapes" style="padding-top:40px;">
   <div class="wrap">
-    <span class="eyebrow">Nos Canapés</span>
-    <h2 class="section-title" style="font-size:clamp(28px,4vw,42px);">Salons &amp; canapés</h2>
+    <span class="eyebrow" id="canapes-eyebrow">Nos Canapés</span>
+    <h2 class="section-title" style="font-size:clamp(28px,4vw,42px);" id="canapes-title">Salons &amp; canapés</h2>
   </div>
   <div class="wrap">
-    <div class="grid-products reveal">
-      <div class="card">
-        <div class="card-media">
-          <img src="assets/canape-1.jpg" alt="Canapé cuir gris anthracite Al-Harousa" loading="lazy">
-          <span class="price-tag">2 500 €</span>
-        </div>
-        <div class="card-body">
-          <h3>Ensemble canapé cuir</h3>
-          <p>Style raffiné, qualité durable et bien-être absolu. Table basse incluse.</p>
-          <div class="card-foot"><span>Dispo. Juillet 2026</span><a href="#contact" class="card-link">Précommander</a></div>
-        </div>
-      </div>
-      <div class="card">
-        <div class="card-media">
-          <img src="assets/canape-2.jpg" alt="Canapé velours Al-Harousa" loading="lazy">
-          <span class="price-tag">2 750 €</span>
-        </div>
-        <div class="card-body">
-          <h3>Ensemble canapé confort</h3>
-          <p>Style raffiné, qualité durable et bien-être absolu. Table basse incluse.</p>
-          <div class="card-foot"><span>Dispo. Juillet 2026</span><a href="#contact" class="card-link">Précommander</a></div>
-        </div>
-      </div>
-      <div class="card">
-        <div class="card-media">
-          <img src="assets/canape-3.jpg" alt="Canapé moderne Al-Harousa" loading="lazy">
-          <span class="price-tag">3 000 €</span>
-        </div>
-        <div class="card-body">
-          <h3>Ensemble canapé prestige</h3>
-          <p>Style raffiné, qualité durable et bien-être absolu. Table basse incluse.</p>
-          <div class="card-foot"><span>Dispo. Juillet 2026</span><a href="#contact" class="card-link">Précommander</a></div>
-        </div>
-      </div>
-    </div>
-    <p style="text-align:center;margin-top:26px;font-size:13px;color:var(--taupe);">7 modèles disponibles de 2 500 € à 3 000 € — table basse assortie dès 500 €, vente individuelle possible.</p>
+    <div class="grid-products reveal" id="grid-canapes"></div>
+    <p style="text-align:center;margin-top:26px;font-size:13px;color:var(--taupe);" id="canapes-note"></p>
   </div>
 </section>
 
 <!-- ================= LIVINGS / TABLE BASSE ================= -->
 <section class="section-pad" style="padding-top:20px;">
   <div class="wrap">
-    <div class="grid-products cols-2 reveal">
-      <div class="card">
-        <div class="card-media">
-          <img src="assets/living-1.jpg" alt="Living Al-Harousa" loading="lazy">
-          <span class="price-tag">1 700 €</span>
-        </div>
-        <div class="card-body">
-          <h3>Nos Livings</h3>
-          <p>Meubles TV, rangements et compositions murales pour votre salon.</p>
-          <div class="card-foot"><span>Livraison &amp; montage offerts</span><a href="#contact" class="card-link">Demander un devis</a></div>
-        </div>
-      </div>
-      <div class="card">
-        <div class="card-media">
-          <img src="assets/table-basse.jpg" alt="Table basse bois Al-Harousa" loading="lazy">
-          <span class="price-tag">dès 500 €</span>
-        </div>
-        <div class="card-body">
-          <h3>Nos Tables Basses</h3>
-          <p>Choisissez la table qui sublimera votre canapé — vente individuelle possible.</p>
-          <div class="card-foot"><span>Plusieurs finitions</span><a href="#contact" class="card-link">Demander un devis</a></div>
-        </div>
-      </div>
-    </div>
+    <div class="grid-products cols-2 reveal" id="grid-livings"></div>
   </div>
 </section>
 
@@ -818,46 +761,12 @@
 <!-- ================= CHAMBRES ================= -->
 <section class="section-pad" id="chambres">
   <div class="wrap">
-    <span class="eyebrow">Nos Chambres à Coucher</span>
-    <h2 class="section-title" style="font-size:clamp(28px,4vw,42px);">Chambres &amp; literie</h2>
+    <span class="eyebrow" id="chambres-eyebrow">Nos Chambres à Coucher</span>
+    <h2 class="section-title" style="font-size:clamp(28px,4vw,42px);" id="chambres-title">Chambres &amp; literie</h2>
   </div>
   <div class="wrap">
-    <div class="grid-products reveal">
-      <div class="card">
-        <div class="card-media">
-          <img src="assets/chambre-1.jpg" alt="Chambre beige Al-Harousa" loading="lazy">
-          <span class="price-tag">1 500 €</span>
-        </div>
-        <div class="card-body">
-          <h3>Chambre Essentielle</h3>
-          <p>Lit capitonné, chevets et ambiance chaleureuse.</p>
-          <div class="card-foot"><span>Livraison &amp; montage offerts</span><a href="#contact" class="card-link">Précommander</a></div>
-        </div>
-      </div>
-      <div class="card">
-        <div class="card-media">
-          <img src="assets/chambre-2.jpg" alt="Chambre complète Al-Harousa" loading="lazy">
-          <span class="price-tag">2 800 €</span>
-        </div>
-        <div class="card-body">
-          <h3>Chambre Prestige</h3>
-          <p>Lit, armoire, commode et miroir assortis.</p>
-          <div class="card-foot"><span>Livraison &amp; montage offerts</span><a href="#contact" class="card-link">Précommander</a></div>
-        </div>
-      </div>
-      <div class="card">
-        <div class="card-media">
-          <img src="assets/chambre-3.jpg" alt="Chambre moderne Al-Harousa" loading="lazy">
-          <span class="price-tag">2 250 €</span>
-        </div>
-        <div class="card-body">
-          <h3>Chambre Signature</h3>
-          <p>Design épuré et matières nobles pour un cocon serein.</p>
-          <div class="card-foot"><span>Livraison &amp; montage offerts</span><a href="#contact" class="card-link">Précommander</a></div>
-        </div>
-      </div>
-    </div>
-    <p style="text-align:center;margin-top:26px;font-size:13px;color:var(--taupe);">9 compositions disponibles, de 1 500 € à 2 800 €.</p>
+    <div class="grid-products reveal" id="grid-chambres"></div>
+    <p style="text-align:center;margin-top:26px;font-size:13px;color:var(--taupe);" id="chambres-note"></p>
   </div>
 </section>
 
@@ -866,90 +775,26 @@
 <!-- ================= SALLE A MANGER + CARRELAGE + TAPIS ================= -->
 <section class="section-pad">
   <div class="wrap">
-    <span class="eyebrow">Salle à manger, sols &amp; textiles</span>
-    <h2 class="section-title" style="font-size:clamp(28px,4vw,42px);">Finitions &amp; art de la table</h2>
+    <span class="eyebrow" id="finitions-eyebrow">Salle à manger, sols &amp; textiles</span>
+    <h2 class="section-title" style="font-size:clamp(28px,4vw,42px);" id="finitions-title">Finitions &amp; art de la table</h2>
   </div>
   <div class="wrap">
-    <div class="grid-products reveal">
-      <div class="card">
-        <div class="card-media">
-          <img src="assets/salle-a-manger.jpg" alt="Salle à manger Al-Harousa" loading="lazy">
-          <span class="price-tag">2 200 €</span>
-        </div>
-        <div class="card-body">
-          <h3>Salle à Manger</h3>
-          <p>Table, chaises et buffet assortis pour vos réceptions.</p>
-          <div class="card-foot"><span>Livraison &amp; montage offerts</span><a href="#contact" class="card-link">Précommander</a></div>
-        </div>
-      </div>
-      <div class="card">
-        <div class="card-media">
-          <img src="assets/carrelage.jpg" alt="Carrelage Al-Harousa" loading="lazy">
-          <span class="price-tag">14 € / m²</span>
-        </div>
-        <div class="card-body">
-          <h3>Carrelage</h3>
-          <p>Grès cérame, marbre, bois et mosaïque — large choix de finitions.</p>
-          <div class="card-foot"><span>Dès 14€ le m²</span><a href="#contact" class="card-link">Demander un devis</a></div>
-        </div>
-      </div>
-      <div class="card">
-        <div class="card-media">
-          <img src="assets/tapis.jpg" alt="Tapis Al-Harousa" loading="lazy">
-          <span class="price-tag">50 €</span>
-        </div>
-        <div class="card-body">
-          <h3>Tapis</h3>
-          <p>Motifs contemporains et classiques pour chaque intérieur.</p>
-          <div class="card-foot"><span>À partir de 50€</span><a href="#contact" class="card-link">Demander un devis</a></div>
-        </div>
-      </div>
-    </div>
+    <div class="grid-products reveal" id="grid-finitions"></div>
   </div>
 </section>
 
 <!-- ================= SERVICES SUR DEVIS ================= -->
 <section class="services section-pad" id="services">
   <div class="wrap">
-    <span class="eyebrow">Et bien plus encore</span>
-    <h2 class="section-title" style="font-size:clamp(28px,4vw,42px);">Services sur devis</h2>
-    <p class="band-note" style="margin-left:0;">Pour ces univers, chaque projet est unique — contactez-nous pour une estimation personnalisée.</p>
+    <span class="eyebrow" id="services-eyebrow">Et bien plus encore</span>
+    <h2 class="section-title" style="font-size:clamp(28px,4vw,42px);" id="services-title">Services sur devis</h2>
+    <p class="band-note" style="margin-left:0;" id="services-note"></p>
   </div>
   <div class="wrap" style="margin-top:50px;">
-    <div class="services-grid reveal">
-      <div class="service-cell">
-        <span class="num">01</span>
-        <h4>Électroménager</h4>
-        <p>Équipement complet pour cuisines et buanderies, sélection sur mesure.</p>
-      </div>
-      <div class="service-cell">
-        <span class="num">02</span>
-        <h4>Plomberie</h4>
-        <p>Sanitaires, robinetterie et installation, du studio à la villa.</p>
-      </div>
-      <div class="service-cell">
-        <span class="num">03</span>
-        <h4>Mobilier bureautique</h4>
-        <p>Aménagement de bureaux et espaces professionnels clé en main.</p>
-      </div>
-      <div class="service-cell">
-        <span class="num">04</span>
-        <h4>Vaisselle</h4>
-        <p>Arts de la table sélectionnés avec nos partenaires.<br><span class="partner">En partenariat</span></p>
-      </div>
-      <div class="service-cell">
-        <span class="num">05</span>
-        <h4>Toiture &amp; fer</h4>
-        <p>Structures, charpente et ferronnerie pour vos projets de construction.<br><span class="partner">En partenariat</span></p>
-      </div>
-      <div class="service-cell">
-        <span class="num">06</span>
-        <h4>Portes &amp; fenêtres</h4>
-        <p>Menuiserie intérieure et extérieure, sur mesure.<br><span class="partner">En partenariat</span></p>
-      </div>
-    </div>
+    <div class="services-grid reveal" id="grid-services"></div>
   </div>
 </section>
+
 
 <!-- ================= PROMISE STRIP ================= -->
 <section class="wrap">
@@ -1051,6 +896,83 @@
 </footer>
 
 <script>
+  // ---------- Dynamic product rendering from data/products.json ----------
+  function escapeHtml(str){
+    if(str === null || str === undefined) return '';
+    return String(str).replace(/[&<>"']/g, m => ({'&':'&amp;','<':'&lt;','>':'&gt;','"':'&quot;',"'":'&#39;'}[m]));
+  }
+
+  function cardHTML(item){
+    const priceClass = (item.price && /sur devis/i.test(item.price)) ? 'price-tag devis' : 'price-tag';
+    return `
+      <div class="card">
+        <div class="card-media">
+          <img src="${escapeHtml(item.image)}" alt="${escapeHtml(item.title)} — Al-Harousa" loading="lazy">
+          ${item.price ? `<span class="${priceClass}">${escapeHtml(item.price)}</span>` : ''}
+        </div>
+        <div class="card-body">
+          <h3>${escapeHtml(item.title)}</h3>
+          <p>${escapeHtml(item.description)}</p>
+          <div class="card-foot"><span>${escapeHtml(item.footnote)}</span><a href="#contact" class="card-link">${escapeHtml(item.cta || 'Demander un devis')}</a></div>
+        </div>
+      </div>`;
+  }
+
+  function serviceCellHTML(item, index){
+    const num = String(index + 1).padStart(2, '0');
+    return `
+      <div class="service-cell">
+        <span class="num">${num}</span>
+        <h4>${escapeHtml(item.title)}</h4>
+        <p>${escapeHtml(item.description)}${item.partner ? '<br><span class="partner">En partenariat</span>' : ''}</p>
+      </div>`;
+  }
+
+  function renderSection(sectionKey, data){
+    const grid = document.getElementById('grid-' + sectionKey);
+    if(!grid || !data) return;
+    grid.innerHTML = (data.items || []).map(cardHTML).join('');
+    grid.classList.toggle('cols-2', data.columns === 2);
+
+    const eyebrowEl = document.getElementById(sectionKey + '-eyebrow');
+    if(eyebrowEl && data.eyebrow) eyebrowEl.textContent = data.eyebrow;
+    const titleEl = document.getElementById(sectionKey + '-title');
+    if(titleEl && data.title) titleEl.textContent = data.title;
+    const noteEl = document.getElementById(sectionKey + '-note');
+    if(noteEl) noteEl.textContent = data.note || '';
+  }
+
+  async function loadProducts(){
+    try{
+      const res = await fetch('data/products.json', {cache:'no-store'});
+      if(!res.ok) throw new Error('products.json introuvable');
+      const data = await res.json();
+
+      Object.entries(data.sections || {}).forEach(([key, section]) => {
+        renderSection(key, section);
+      });
+
+      const servicesGrid = document.getElementById('grid-services');
+      if(servicesGrid && data.services){
+        servicesGrid.innerHTML = (data.services.items || []).map(serviceCellHTML).join('');
+        const eyebrowEl = document.getElementById('services-eyebrow');
+        if(eyebrowEl && data.services.eyebrow) eyebrowEl.textContent = data.services.eyebrow;
+        const titleEl = document.getElementById('services-title');
+        if(titleEl && data.services.title) titleEl.textContent = data.services.title;
+        const noteEl = document.getElementById('services-note');
+        if(noteEl) noteEl.textContent = data.services.note || '';
+      }
+
+      // Re-observe newly injected reveal containers (already-registered parents work automatically,
+      // but ensure grids that were empty at initial IO setup still animate in)
+      document.querySelectorAll('.reveal:not(.in)').forEach(el => io.observe(el));
+    }catch(err){
+      console.error('Erreur de chargement des produits :', err);
+    }
+  }
+</script>
+
+<script>
   // Header scroll state
   const header = document.getElementById('siteHeader');
   window.addEventListener('scroll', () => {
@@ -1068,7 +990,7 @@
       nav.style.top='100%';
       nav.style.left='0';
       nav.style.right='0';
-      nav.style.background='rgba(11,11,10,0.97)';
+      nav.style.background='rgba(33,31,28,0.97)';
       nav.style.padding='20px 32px';
       nav.querySelector('ul').style.flexDirection='column';
       nav.querySelector('ul').style.gap='18px';
@@ -1088,6 +1010,8 @@
     e.preventDefault();
     alert('Merci ! Le formulaire n\'est pas encore connecté. Contactez-nous directement par téléphone ou email pour votre demande.');
   });
+
+  loadProducts();
 </script>
 
 </body>
