@@ -2,18 +2,18 @@
 <html lang="fr">
 <head>
 <meta charset="UTF-8">
-<meta name="viewport" content="width=device-width, initial-scale=1.0">
-<title>AL-HAROUSA — Mobilier, aménagement &amp; décoration | Moroni</title>
-<meta name="description" content="AL-HAROUSA — Depuis 2005, mobilier, plomberie, quincaillerie, carrelage et décoration à Moroni. Livraison et montage offerts. Catalogue Comores Expo 2026.">
+<meta name="viewport" content="width=device-width, initial-scale=1.0, viewport-fit=cover">
+<title>AL-HAROUSA — Entrez dans la maison</title>
+<meta name="description" content="AL-HAROUSA — Depuis 2005, mobilier, plomberie, quincaillerie, carrelage et décoration à Moroni. Poussez la porte, visitez la maison.">
 
 <link rel="icon" type="image/png" sizes="32x32" href="favicon-32.png">
 <link rel="icon" type="image/png" sizes="16x16" href="favicon-16.png">
 <link rel="apple-touch-icon" sizes="180x180" href="apple-touch-icon.png">
-<meta name="theme-color" content="#211f1c">
+<meta name="theme-color" content="#0d0c0a">
 
 <meta property="og:type" content="website">
-<meta property="og:title" content="AL-HAROUSA — Mobilier, aménagement & décoration | Moroni">
-<meta property="og:description" content="Depuis 2005, mobilier, plomberie, quincaillerie, carrelage et décoration à Moroni. Livraison et montage offerts.">
+<meta property="og:title" content="AL-HAROUSA — Entrez dans la maison">
+<meta property="og:description" content="Depuis 2005, mobilier, plomberie, quincaillerie, carrelage et décoration à Moroni. Poussez la porte, visitez la maison.">
 <meta property="og:image" content="hero.jpg">
 <meta name="twitter:card" content="summary_large_image">
 
@@ -23,8 +23,9 @@
 
 <style>
   :root{
-    --black: #211f1c;
-    --black-soft: #2b2824;
+    --black: #0d0c0a;
+    --black-soft: #17150f;
+    --panel: #211f1c;
     --white: #f7f5f0;
     --white-dim: #e7e3d9;
     --gold: #c9a867;
@@ -34,999 +35,816 @@
     --display: 'Oswald', sans-serif;
     --body: 'Jost', sans-serif;
   }
-
   *{margin:0;padding:0;box-sizing:border-box;}
-  html{scroll-behavior:smooth;}
-  body{
+  html,body{
+    height:100%;
     background:var(--black);
     color:var(--white);
     font-family:var(--body);
     font-weight:300;
+    overflow:hidden;
     -webkit-font-smoothing:antialiased;
-    overflow-x:hidden;
   }
-  img{display:block;max-width:100%;height:auto;}
-  a{color:inherit;text-decoration:none;}
-
+  img{display:block;max-width:100%;}
+  a{color:inherit;}
+  button{font-family:inherit;}
   ::selection{background:var(--gold);color:var(--black);}
 
-  /* ---------- Utility ---------- */
-  .wrap{
-    max-width:1240px;
-    margin:0 auto;
-    padding:0 32px;
+  @media (prefers-reduced-motion: reduce){
+    *{animation-duration:0.01ms !important; transition-duration:0.01ms !important;}
   }
-  .eyebrow{
+
+  /* ============ APP SHELL ============ */
+  #app{
+    position:relative;
+    width:100vw;
+    height:100vh;
+    height:100dvh;
+    overflow:hidden;
+  }
+
+  /* ============ DOOR SCREEN ============ */
+  #door-screen{
+    position:absolute;
+    inset:0;
+    display:flex;
+    flex-direction:column;
+    align-items:center;
+    justify-content:center;
+    background:radial-gradient(ellipse at 50% 30%, #221d16 0%, #0d0c0a 70%);
+    z-index:50;
+    transition:opacity 0.8s ease 0.4s, visibility 0.8s ease 0.4s;
+  }
+  #door-screen.hidden{
+    opacity:0;
+    visibility:hidden;
+    pointer-events:none;
+  }
+  .door-eyebrow{
     font-family:var(--display);
-    font-size:12px;
+    font-size:11px;
     letter-spacing:0.32em;
     text-transform:uppercase;
     color:var(--gold);
-    display:inline-flex;
-    align-items:center;
-    gap:12px;
+    margin-bottom:28px;
+    opacity:0.85;
+    text-align:center;
   }
-  .eyebrow::before{
-    content:'';
-    width:28px;height:1px;
-    background:var(--gold);
-    display:inline-block;
-  }
-  .section-title{
-    font-family:var(--display);
-    font-weight:600;
-    text-transform:uppercase;
-    letter-spacing:0.04em;
-    font-size:clamp(34px,5vw,58px);
-    line-height:1.02;
-    margin-top:14px;
-  }
-  .section-pad{padding:100px 0;}
-  .divider{height:1px;background:var(--line);width:100%;}
-
-  /* ---------- Nav ---------- */
-  header{
-    position:fixed;
-    top:0;left:0;right:0;
-    z-index:100;
-    display:flex;
-    align-items:center;
-    justify-content:space-between;
-    padding:22px 32px;
-    background:linear-gradient(180deg, rgba(33,31,28,0.85) 0%, rgba(33,31,28,0) 100%);
-    transition:background .3s ease, padding .3s ease, backdrop-filter .3s ease;
-  }
-  header.scrolled{
-    background:rgba(33,31,28,0.92);
-    backdrop-filter:blur(10px);
-    padding:14px 32px;
-    border-bottom:1px solid var(--line);
-  }
-  .logo{
-    font-family:var(--display);
-    font-weight:600;
-    letter-spacing:0.08em;
-    font-size:20px;
-    text-transform:uppercase;
-  }
-  .logo span{color:var(--gold);}
-  nav ul{
-    list-style:none;
-    display:flex;
-    gap:34px;
-  }
-  nav a{
-    font-family:var(--display);
-    font-size:12px;
-    letter-spacing:0.16em;
-    text-transform:uppercase;
-    color:var(--white-dim);
+  .door-scene{
     position:relative;
-    padding-bottom:4px;
+    height:min(64vh, 700px);
+    width:auto;
+    aspect-ratio:700/1150;
+    perspective:2400px;
   }
-  nav a::after{
-    content:'';
+  .door-leaf{
     position:absolute;
-    left:0;bottom:0;
-    width:0;height:1px;
-    background:var(--gold);
-    transition:width .3s ease;
+    top:0;
+    width:50%;
+    height:100%;
+    background-image:url('door.svg');
+    background-size:200% 100%;
+    background-repeat:no-repeat;
+    transition:transform 1.4s cubic-bezier(.45,0,.2,1), filter 1.4s ease;
+    cursor:pointer;
   }
-  nav a:hover::after{width:100%;}
-  .nav-cta{
-    display:inline-block;
-    border:1px solid var(--gold);
-    color:var(--gold) !important;
-    padding:9px 20px;
-    font-size:11px !important;
-  }
-  .nav-cta::after{display:none;}
-  .nav-cta:hover{background:var(--gold);color:var(--black) !important;}
-  .burger{display:none;background:none;border:none;color:var(--white);font-size:26px;cursor:pointer;}
+  .door-leaf.l{left:0; background-position:left top; transform-origin:left center;}
+  .door-leaf.r{left:50%; background-position:right top; transform-origin:right center;}
+  .door-scene.open .door-leaf.l{transform:rotateY(-112deg); filter:brightness(0.35);}
+  .door-scene.open .door-leaf.r{transform:rotateY(112deg); filter:brightness(0.35);}
 
-  /* ---------- Hero ---------- */
-  .hero{
-    position:relative;
-    height:100vh;
-    min-height:640px;
-    display:flex;
-    align-items:flex-end;
-    background:#000;
-    overflow:hidden;
-  }
-  .hero img{
-    position:absolute;
-    inset:0;
-    width:100%;height:100%;
-    object-fit:cover;
-    opacity:0.55;
-  }
-  .hero::before{
-    content:'';
-    position:absolute;inset:0;
-    background:linear-gradient(180deg, rgba(33,31,28,0.35) 0%, rgba(33,31,28,0.35) 40%, rgba(33,31,28,0.97) 92%);
-    z-index:1;
-  }
-  .hero-content{
-    position:relative;
-    z-index:2;
-    padding:0 32px 90px;
-    max-width:1240px;
-    margin:0 auto;
-    width:100%;
-  }
-  .hero-content .eyebrow{margin-bottom:18px;}
-  .hero-title{
-    font-family:var(--display);
-    font-weight:700;
-    text-transform:uppercase;
-    font-size:clamp(46px,9vw,108px);
-    line-height:0.94;
-    letter-spacing:0.01em;
-  }
-  .hero-title em{
-    font-style:normal;
-    color:var(--gold);
-  }
-  .hero-sub{
-    font-family:var(--body);
-    font-weight:300;
-    font-size:18px;
-    color:var(--white-dim);
-    max-width:480px;
-    margin-top:26px;
-    line-height:1.6;
-  }
-  .hero-actions{
-    display:flex;
-    gap:18px;
-    margin-top:40px;
-    flex-wrap:wrap;
-  }
-  .btn{
+  .door-hint{
+    margin-top:30px;
     font-family:var(--display);
     font-size:12px;
     letter-spacing:0.14em;
-    text-transform:uppercase;
-    padding:16px 30px;
-    display:inline-block;
-    transition:all .25s ease;
-    cursor:pointer;
-    border:1px solid transparent;
-  }
-  .btn-gold{
-    background:var(--gold);
-    color:var(--black);
-  }
-  .btn-gold:hover{background:var(--gold-soft);}
-  .btn-outline{
-    border-color:var(--white-dim);
-    color:var(--white);
-  }
-  .btn-outline:hover{border-color:var(--gold);color:var(--gold);}
-
-  .hero-scroll{
-    position:absolute;
-    bottom:36px;right:32px;
-    z-index:2;
-    writing-mode:vertical-rl;
-    font-family:var(--display);
-    font-size:11px;
-    letter-spacing:0.2em;
     text-transform:uppercase;
     color:var(--white-dim);
     display:flex;
     align-items:center;
     gap:10px;
+    animation:doorPulse 2.2s ease-in-out infinite;
   }
-  .hero-scroll::after{
+  .door-hint::before, .door-hint::after{
     content:'';
-    width:1px;height:50px;
-    background:linear-gradient(var(--gold), transparent);
+    width:22px;height:1px;
+    background:var(--gold);
   }
-
-  /* ---------- Intro / About ---------- */
-  .about{
-    background:var(--black);
+  @keyframes doorPulse{
+    0%,100%{opacity:0.55;}
+    50%{opacity:1;}
   }
-  .about-grid{
-    display:grid;
-    grid-template-columns:0.9fr 1.1fr;
-    gap:80px;
-    align-items:start;
-  }
-  .about-lead{
+  .door-skip{
+    position:absolute;
+    bottom:28px;
+    right:28px;
     font-family:var(--display);
-    font-weight:500;
-    font-size:clamp(24px,2.6vw,32px);
-    line-height:1.35;
-    color:var(--white);
-    letter-spacing:0.01em;
-  }
-  .about-lead .gold{color:var(--gold);}
-  .about-body p{
-    font-size:16px;
-    line-height:1.85;
-    color:var(--white-dim);
-    margin-bottom:20px;
-    font-weight:300;
-  }
-  .about-stats{
-    display:grid;
-    grid-template-columns:repeat(3,1fr);
-    gap:30px;
-    margin-top:44px;
-    border-top:1px solid var(--line);
-    padding-top:34px;
-  }
-  .stat-num{
-    font-family:var(--display);
-    font-size:38px;
-    color:var(--gold);
-    font-weight:600;
-  }
-  .stat-label{
-    font-size:12px;
-    letter-spacing:0.08em;
+    font-size:11px;
+    letter-spacing:0.1em;
     text-transform:uppercase;
     color:var(--taupe);
-    margin-top:6px;
+    border-bottom:1px solid transparent;
+    padding-bottom:2px;
+    transition:color .2s ease, border-color .2s ease;
   }
+  .door-skip:hover{color:var(--gold); border-color:var(--gold);}
 
-  /* ---------- Category divider bands ---------- */
-  .band{
-    position:relative;
-    padding:150px 0 60px;
-    text-align:center;
-    background:var(--black);
+  /* ============ TOUR ============ */
+  #tour{
+    position:absolute;
+    inset:0;
+    opacity:0;
+    visibility:hidden;
+    transition:opacity 0.6s ease;
   }
-  .band .section-title{margin-top:14px;}
-  .band-note{
-    color:var(--taupe);
-    font-size:15px;
-    max-width:560px;
-    margin:22px auto 0;
-    line-height:1.7;
-  }
+  #tour.active{opacity:1; visibility:visible;}
 
-  /* ---------- Product grid ---------- */
-  .grid-products{
-    display:grid;
-    grid-template-columns:repeat(3,1fr);
-    gap:2px;
-    background:var(--line);
-    margin-top:60px;
-  }
-  .grid-products.cols-2{grid-template-columns:repeat(2,1fr);}
-  .grid-products.cols-2 .card:last-child:nth-child(odd){grid-column:1/-1;}
-  .card{
-    background:var(--black);
-    position:relative;
+  .room-backdrop{
+    position:absolute;
+    inset:0;
     overflow:hidden;
   }
-  .card-media{
+  .room-backdrop img{
+    position:absolute;
+    inset:0;
+    width:100%;
+    height:100%;
+    object-fit:cover;
+    transform:scale(1.16);
+    filter:blur(10px) brightness(0.7);
+    opacity:0;
+    transition:transform 1.1s cubic-bezier(.2,.7,.2,1), filter 1.1s cubic-bezier(.2,.7,.2,1), opacity 0.9s ease;
+  }
+  .room-backdrop.no-photo{
+    background:radial-gradient(ellipse at 50% 20%, #241f19 0%, #0d0c0a 75%);
+  }
+  .room-backdrop::after{
+    content:'';
+    position:absolute; inset:0;
+    background:linear-gradient(180deg, rgba(13,12,10,0.55) 0%, rgba(13,12,10,0.15) 30%, rgba(13,12,10,0.25) 55%, rgba(13,12,10,0.96) 100%);
+    z-index:1;
+  }
+  #tour.walking .room-backdrop img{
+    transform:scale(1);
+    filter:blur(0px) brightness(0.62);
+    opacity:1;
+  }
+
+  .room-topbar{
+    position:absolute;
+    top:0; left:0; right:0;
+    z-index:10;
+    display:flex;
+    align-items:center;
+    justify-content:space-between;
+    padding:24px 32px;
+  }
+  .room-logo{
+    font-family:var(--display);
+    font-weight:600;
+    letter-spacing:0.08em;
+    font-size:16px;
+    text-transform:uppercase;
+    cursor:pointer;
+  }
+  .room-logo span{color:var(--gold);}
+  .room-trail{
+    display:flex;
+    gap:22px;
+    list-style:none;
+  }
+  .room-trail li{
+    font-family:var(--display);
+    font-size:11px;
+    letter-spacing:0.1em;
+    text-transform:uppercase;
+    color:var(--taupe);
+    cursor:pointer;
+    padding-bottom:4px;
+    border-bottom:1px solid transparent;
+    transition:color .25s ease, border-color .25s ease;
+    white-space:nowrap;
+  }
+  .room-trail li:hover{color:var(--white-dim);}
+  .room-trail li.current{color:var(--gold); border-color:var(--gold);}
+  .trail-toggle{
+    display:none;
+    background:none;
+    border:1px solid var(--line);
+    color:var(--white);
+    font-size:18px;
+    width:38px;height:38px;
+    cursor:pointer;
+  }
+
+  .room-content{
+    position:absolute;
+    inset:0;
+    z-index:5;
+    display:flex;
+    flex-direction:column;
+    justify-content:flex-end;
+    padding:0 32px 30px 100px;
+  }
+  .room-heading{
+    max-width:900px;
+    opacity:0;
+    transform:translateY(18px);
+    transition:opacity 0.7s ease 0.35s, transform 0.7s ease 0.35s;
+  }
+  #tour.walking .room-heading{opacity:1; transform:translateY(0);}
+  .room-eyebrow{
+    font-family:var(--display);
+    font-size:12px;
+    letter-spacing:0.3em;
+    text-transform:uppercase;
+    color:var(--gold);
+    display:flex;
+    align-items:center;
+    gap:12px;
+    margin-bottom:12px;
+  }
+  .room-eyebrow::before{content:'';width:26px;height:1px;background:var(--gold);}
+  .room-title{
+    font-family:var(--display);
+    font-weight:700;
+    text-transform:uppercase;
+    font-size:clamp(34px,5.2vw,64px);
+    line-height:0.98;
+    margin-bottom:10px;
+  }
+  .room-desc{
+    font-size:15px;
+    color:var(--white-dim);
+    max-width:560px;
+    line-height:1.65;
+    margin-bottom:22px;
+  }
+
+  .room-cards{
+    display:flex;
+    gap:14px;
+    overflow-x:auto;
+    padding-bottom:6px;
+    scrollbar-width:thin;
+    scrollbar-color:var(--gold) transparent;
+    opacity:0;
+    transform:translateY(18px);
+    transition:opacity 0.7s ease 0.55s, transform 0.7s ease 0.55s;
+  }
+  #tour.walking .room-cards{opacity:1; transform:translateY(0);}
+  .room-cards::-webkit-scrollbar{height:5px;}
+  .room-cards::-webkit-scrollbar-thumb{background:var(--gold); border-radius:3px;}
+
+  .p-card{
+    flex:0 0 auto;
+    width:230px;
+    background:rgba(23,21,15,0.82);
+    backdrop-filter:blur(6px);
+    border:1px solid rgba(247,245,240,0.12);
+  }
+  .p-card-media{
     position:relative;
     aspect-ratio:4/3;
     overflow:hidden;
-    background:#332f2a;
   }
-  .card-media img{
-    width:100%;height:100%;
-    object-fit:cover;
-    transition:transform .7s cubic-bezier(.2,.8,.2,1), filter .5s ease;
-    filter:grayscale(15%) brightness(0.96);
-  }
-  .card:hover .card-media img{
-    transform:scale(1.07);
-    filter:grayscale(0%) brightness(1);
-  }
-  .price-tag{
+  .p-card-media img{width:100%;height:100%;object-fit:cover;}
+  .p-price{
     position:absolute;
-    left:18px;bottom:18px;
+    left:10px;bottom:10px;
     background:var(--gold);
     color:var(--black);
     font-family:var(--display);
     font-weight:600;
-    font-size:15px;
-    padding:8px 16px;
-    letter-spacing:0.02em;
+    font-size:12.5px;
+    padding:5px 10px;
   }
-  .price-tag.devis{
-    background:transparent;
-    border:1px solid var(--gold-soft);
-    color:var(--gold-soft);
-  }
-  .card-body{
-    padding:22px 24px 26px;
-  }
-  .card-body h3{
+  .p-price.devis{background:transparent;border:1px solid var(--gold-soft);color:var(--gold-soft);}
+  .p-body{padding:13px 14px 15px;}
+  .p-body h4{
     font-family:var(--display);
-    font-size:15px;
-    letter-spacing:0.04em;
-    text-transform:uppercase;
-    font-weight:500;
-    color:var(--white);
-  }
-  .card-body p{
-    font-size:13.5px;
-    color:var(--taupe);
-    margin-top:8px;
-    line-height:1.6;
-  }
-  .card-foot{
-    display:flex;
-    align-items:center;
-    justify-content:space-between;
-    margin-top:16px;
-    padding-top:14px;
-    border-top:1px solid var(--line);
-  }
-  .card-foot span{
-    font-size:11px;
-    letter-spacing:0.06em;
-    text-transform:uppercase;
-    color:var(--taupe);
-  }
-  .card-link{
-    font-family:var(--display);
-    font-size:11px;
-    letter-spacing:0.1em;
-    text-transform:uppercase;
-    color:var(--gold);
-    text-decoration:underline;
-    text-underline-offset:4px;
-    text-decoration-thickness:1px;
-    text-align:right;
-  }
-
-  /* ---------- Services strip (simple categories, sur devis) ---------- */
-  .services{
-    background:var(--black-soft);
-    border-top:1px solid var(--line);
-    border-bottom:1px solid var(--line);
-  }
-  .services-grid{
-    display:grid;
-    grid-template-columns:repeat(3,1fr);
-    gap:1px;
-    background:var(--line);
-  }
-  .service-cell{
-    background:var(--black-soft);
-    padding:44px 34px;
-    transition:background .3s ease;
-  }
-  .service-cell:hover{background:#1b1916;}
-  .service-cell .num{
-    font-family:var(--display);
-    color:var(--gold);
-    font-size:13px;
-    letter-spacing:0.1em;
-  }
-  .service-cell h4{
-    font-family:var(--display);
-    text-transform:uppercase;
-    font-size:19px;
+    font-size:12.5px;
     letter-spacing:0.03em;
-    margin-top:16px;
-    font-weight:500;
-  }
-  .service-cell p{
-    font-size:13.5px;
-    color:var(--taupe);
-    margin-top:10px;
-    line-height:1.7;
-  }
-  .service-cell .partner{
-    display:inline-block;
-    margin-top:14px;
-    font-size:11px;
-    letter-spacing:0.08em;
     text-transform:uppercase;
-    color:var(--gold-soft);
-    border:1px solid rgba(201,168,103,0.35);
-    padding:5px 12px;
+    font-weight:500;
+    margin-bottom:5px;
+  }
+  .p-body p{font-size:12px;color:var(--taupe);line-height:1.5;}
+
+  .svc-card{
+    flex:0 0 auto;
+    width:200px;
+    background:rgba(23,21,15,0.82);
+    backdrop-filter:blur(6px);
+    border:1px solid rgba(247,245,240,0.12);
+    padding:16px;
+  }
+  .svc-card h4{
+    font-family:var(--display);
+    font-size:13px;
+    letter-spacing:0.03em;
+    text-transform:uppercase;
+    font-weight:500;
+    margin-bottom:6px;
+  }
+  .svc-card p{font-size:12px;color:var(--taupe);line-height:1.55;}
+  .svc-card .partner{
+    display:inline-block;margin-top:8px;font-size:9.5px;letter-spacing:0.08em;text-transform:uppercase;
+    color:var(--gold-soft);border:1px solid rgba(201,168,103,0.35);padding:3px 8px;
   }
 
-  /* ---------- Promise / delivery banner ---------- */
-  .promise{
-    padding:70px 0;
-    display:flex;
-    align-items:center;
-    justify-content:space-between;
-    flex-wrap:wrap;
-    gap:30px;
-    border-bottom:1px solid var(--line);
-  }
-  .promise-item{
-    display:flex;
-    align-items:center;
-    gap:16px;
-    flex:1;
-    min-width:220px;
-  }
-  .promise-item .icon{
-    width:44px;height:44px;
-    border:1px solid var(--gold);
+  /* Nav arrows */
+  .room-nav{
+    position:absolute;
+    z-index:15;
+    top:50%;
+    transform:translateY(-50%);
+    width:52px;height:52px;
     border-radius:50%;
+    border:1px solid rgba(247,245,240,0.35);
+    background:rgba(13,12,10,0.35);
+    backdrop-filter:blur(4px);
+    color:var(--white);
+    font-size:20px;
     display:flex;align-items:center;justify-content:center;
-    flex-shrink:0;
-    color:var(--gold);
-    font-family:var(--display);
-    font-size:18px;
+    cursor:pointer;
+    transition:background .2s ease, border-color .2s ease, opacity .2s ease;
   }
-  .promise-item h5{
-    font-family:var(--display);
-    font-size:14px;
-    letter-spacing:0.04em;
-    text-transform:uppercase;
-    font-weight:500;
-  }
-  .promise-item p{
-    font-size:13px;
-    color:var(--taupe);
-    margin-top:4px;
-  }
+  .room-nav:hover{border-color:var(--gold); background:rgba(13,12,10,0.6);}
+  .room-nav.prev{left:20px;}
+  .room-nav.next{right:20px;}
+  .room-nav[disabled]{opacity:0; pointer-events:none;}
 
-  /* ---------- Contact ---------- */
-  .contact{
-    position:relative;
-    background:var(--black);
-  }
-  .contact-media{
-    position:relative;
-    height:60vh;
-    min-height:420px;
-    overflow:hidden;
-  }
-  .contact-media img{
-    width:100%;height:100%;object-fit:cover;
-    filter:grayscale(20%) brightness(0.7);
-  }
-  .contact-media::after{
-    content:'';
-    position:absolute;inset:0;
-    background:linear-gradient(180deg, rgba(33,31,28,0) 0%, var(--black) 100%);
-  }
-  .contact-panel{
-    background:var(--black);
-    padding:90px 0 100px;
-  }
-  .contact-grid{
-    display:grid;
-    grid-template-columns:1.1fr 0.9fr;
-    gap:70px;
-  }
-  .contact-grid h2{margin-bottom:20px;}
-  .contact-grid > div:first-child p{
-    color:var(--white-dim);
-    font-size:16px;
-    line-height:1.8;
-    max-width:460px;
-    margin-bottom:30px;
-  }
-  .contact-list{list-style:none;}
-  .contact-list li{
-    display:flex;
-    gap:16px;
-    padding:18px 0;
-    border-top:1px solid var(--line);
-    align-items:baseline;
-  }
-  .contact-list li:last-child{border-bottom:1px solid var(--line);}
-  .contact-list .label{
-    font-family:var(--display);
-    font-size:11px;
-    letter-spacing:0.12em;
-    text-transform:uppercase;
-    color:var(--gold);
-    width:110px;
-    flex-shrink:0;
-  }
-  .contact-list .value{
-    font-size:15.5px;
-    color:var(--white);
-    font-weight:300;
-  }
-  .contact-list a.value:hover{color:var(--gold);}
-
-  .form-card{
-    background:var(--black-soft);
-    border:1px solid var(--line);
-    padding:40px;
-  }
-  .form-card h3{
-    font-family:var(--display);
-    text-transform:uppercase;
-    font-size:19px;
-    letter-spacing:0.03em;
-    margin-bottom:8px;
-    font-weight:500;
-  }
-  .form-card > p{
-    font-size:13.5px;
-    color:var(--taupe);
-    margin-bottom:26px;
-    line-height:1.6;
-  }
-  .field{margin-bottom:18px;}
-  .field label{
-    display:block;
-    font-size:11px;
-    letter-spacing:0.08em;
-    text-transform:uppercase;
-    color:var(--taupe);
-    margin-bottom:8px;
-  }
-  .field input, .field select, .field textarea{
-    width:100%;
-    background:transparent;
-    border:none;
-    border-bottom:1px solid var(--line);
-    color:var(--white);
-    font-family:var(--body);
-    font-size:15px;
-    padding:8px 2px;
-    outline:none;
-    transition:border-color .25s ease;
-  }
-  .field input:focus, .field select:focus, .field textarea:focus{
-    border-color:var(--gold);
-  }
-  .field select{
-    -webkit-appearance:none;
-    appearance:none;
-    background-image:url("data:image/svg+xml;utf8,<svg xmlns='http://www.w3.org/2000/svg' width='10' height='6'><path d='M0 0l5 6 5-6z' fill='%23C9A867'/></svg>");
-    background-repeat:no-repeat;
-    background-position:right 4px center;
-  }
-  .field select option{background:#2b2824;color:var(--white);}
-  .field textarea{resize:vertical;min-height:80px;font-family:var(--body);}
-  .form-submit{
-    margin-top:8px;
-    width:100%;
-    text-align:center;
-    background:var(--gold);
-    color:var(--black);
-    border:none;
+  .room-advance{
+    position:absolute;
+    bottom:30px;
+    right:32px;
+    z-index:15;
     font-family:var(--display);
     font-size:12px;
     letter-spacing:0.14em;
     text-transform:uppercase;
-    padding:16px;
-    cursor:pointer;
-    transition:background .25s ease;
-  }
-  .form-submit:hover{background:var(--gold-soft);}
-  .form-note{
-    font-size:11.5px;
-    color:var(--taupe);
-    margin-top:14px;
-    line-height:1.6;
-  }
-
-  /* ---------- Footer ---------- */
-  footer{
-    background:var(--black);
-    border-top:1px solid var(--line);
-    padding:44px 0;
-  }
-  .footer-row{
+    background:var(--gold);
+    color:var(--black);
+    padding:14px 26px;
     display:flex;
-    justify-content:space-between;
     align-items:center;
-    flex-wrap:wrap;
-    gap:16px;
-  }
-  .footer-row .logo{font-size:16px;}
-  .footer-links{
-    display:flex;
-    gap:26px;
-    list-style:none;
-  }
-  .footer-links a{
-    font-size:12px;
-    color:var(--taupe);
-  }
-  .footer-links a:hover{color:var(--gold);}
-  .footer-copy{
-    font-size:11.5px;
-    color:var(--taupe);
-    margin-top:20px;
-    text-align:center;
-  }
-
-  /* ---------- reveal on scroll ---------- */
-  .reveal{
+    gap:10px;
+    cursor:pointer;
+    transition:background .2s ease, transform .2s ease;
     opacity:0;
-    transform:translateY(28px);
-    transition:opacity .8s ease, transform .8s ease;
+    transform:translateY(14px);
   }
-  .reveal.in{opacity:1;transform:translateY(0);}
+  #tour.walking .room-advance{opacity:1; transform:translateY(0); transition:opacity 0.7s ease 0.7s, transform 0.7s ease 0.7s, background .2s ease;}
+  .room-advance:hover{background:var(--gold-soft);}
 
+  /* progress dots for mobile */
+  .room-dots{
+    position:absolute;
+    bottom:30px;
+    left:32px;
+    z-index:15;
+    display:flex;
+    gap:8px;
+  }
+  .room-dots span{
+    width:7px;height:7px;
+    border-radius:50%;
+    background:rgba(247,245,240,0.3);
+    transition:background .3s ease, transform .3s ease;
+  }
+  .room-dots span.current{background:var(--gold); transform:scale(1.3);}
+
+  /* transition veil */
+  .veil{
+    position:absolute;
+    inset:0;
+    background:var(--black);
+    z-index:8;
+    opacity:0;
+    pointer-events:none;
+    transition:opacity 0.45s ease;
+  }
+  .veil.show{opacity:1;}
+
+  /* ============ CONTACT ROOM (special layout) ============ */
+  .contact-panel{
+    background:rgba(13,12,10,0.86);
+    backdrop-filter:blur(8px);
+    border:1px solid rgba(247,245,240,0.14);
+    padding:26px 28px;
+    max-width:460px;
+    opacity:0;
+    transform:translateY(18px);
+    transition:opacity 0.7s ease 0.55s, transform 0.7s ease 0.55s;
+  }
+  #tour.walking .contact-panel{opacity:1; transform:translateY(0);}
+  .contact-panel h3{
+    font-family:var(--display);
+    text-transform:uppercase;
+    font-size:18px;
+    margin-bottom:14px;
+    font-weight:500;
+  }
+  .c-field{margin-bottom:13px;}
+  .c-field label{
+    display:block;font-size:10.5px;letter-spacing:0.08em;text-transform:uppercase;
+    color:var(--taupe);margin-bottom:6px;
+  }
+  .c-field input, .c-field select, .c-field textarea{
+    width:100%;background:transparent;border:none;border-bottom:1px solid var(--line);
+    color:var(--white);font-family:var(--body);font-size:14px;padding:6px 2px;outline:none;
+    transition:border-color .2s ease;
+  }
+  .c-field input:focus, .c-field select:focus, .c-field textarea:focus{border-color:var(--gold);}
+  .c-field select option{background:#211f1c;}
+  .c-field textarea{resize:vertical;min-height:50px;}
+  .c-submit{
+    margin-top:6px;width:100%;text-align:center;background:var(--gold);color:var(--black);
+    border:none;font-family:var(--display);font-size:11.5px;letter-spacing:0.12em;text-transform:uppercase;
+    padding:13px;cursor:pointer;transition:background .2s ease;
+  }
+  .c-submit:hover{background:var(--gold-soft);}
+  .contact-info{
+    display:flex;flex-wrap:wrap;gap:18px;margin-top:16px;
+    opacity:0;transform:translateY(18px);
+    transition:opacity 0.7s ease 0.4s, transform 0.7s ease 0.4s;
+  }
+  #tour.walking .contact-info{opacity:1;transform:translateY(0);}
+  .contact-info a{
+    font-size:13px;color:var(--white-dim);
+    border-bottom:1px solid var(--line);padding-bottom:2px;
+  }
+  .contact-info a:hover{color:var(--gold); border-color:var(--gold);}
+
+  /* ============ RESPONSIVE ============ */
   @media (max-width:900px){
-    nav{display:none;}
-    .burger{display:block;}
-    .about-grid{grid-template-columns:1fr;gap:40px;}
-    .grid-products{grid-template-columns:repeat(2,1fr) !important;}
-    .grid-products:not(.cols-2) .card:last-child:nth-child(odd){grid-column:1/-1;}
-    .services-grid{grid-template-columns:1fr;}
-    .contact-grid{grid-template-columns:1fr;}
-    .promise{flex-direction:column;align-items:flex-start;}
+    .room-trail{display:none;}
+    .trail-toggle{display:flex; align-items:center; justify-content:center;}
+    .room-nav{width:42px;height:42px;font-size:16px;}
+    .room-nav.prev{left:10px;}
+    .room-nav.next{right:10px;}
+    .room-content{padding-left:76px;}
+    .room-advance{right:20px; bottom:24px; padding:12px 20px; font-size:11px;}
+    .room-dots{left:20px; bottom:26px;}
+    .p-card{width:190px;}
+    .svc-card{width:170px;}
   }
-  @media (max-width:560px){
-    .grid-products{grid-template-columns:1fr !important;}
-    .about-stats{grid-template-columns:1fr;gap:20px;}
-    .wrap{padding:0 20px;}
-    .section-pad{padding:70px 0;}
+  @media (max-width:600px){
+    .door-scene{width:78vw;}
+    .room-title{font-size:clamp(28px,8vw,44px);}
+    .room-desc{font-size:13.5px;}
+    .room-content{padding:0 18px 22px;}
+    .room-cards{margin-bottom:58px;}
+    .contact-info{margin-bottom:58px;}
+    .room-topbar{padding:18px;}
+    .room-nav{display:none;}
+    .contact-panel{max-width:100%;padding:20px;}
   }
+
+  .mobile-trail{
+    display:none;
+    position:absolute;
+    top:64px; left:0; right:0;
+    z-index:11;
+    background:rgba(13,12,10,0.95);
+    backdrop-filter:blur(8px);
+    padding:14px 20px;
+    flex-direction:column;
+    gap:14px;
+  }
+  .mobile-trail.show{display:flex;}
+  .mobile-trail li{
+    list-style:none;
+    font-family:var(--display);
+    font-size:13px;
+    letter-spacing:0.08em;
+    text-transform:uppercase;
+    color:var(--taupe);
+  }
+  .mobile-trail li.current{color:var(--gold);}
 </style>
 </head>
 <body>
 
-<header id="siteHeader">
-  <div class="logo">AL<span>-</span>HAROUSA</div>
-  <nav id="mainNav">
-    <ul>
-      <li><a href="#about">Maison</a></li>
-      <li><a href="#canapes">Canapés</a></li>
-      <li><a href="#chambres">Chambres</a></li>
-      <li><a href="#services">Services</a></li>
-      <li><a href="#contact" class="nav-cta">Demander un devis</a></li>
-    </ul>
-  </nav>
-  <button class="burger" id="burgerBtn" aria-label="Menu">☰</button>
-</header>
+<div id="app">
 
-<!-- ================= HERO ================= -->
-<section class="hero">
-  <img src="hero.jpg" alt="Intérieur Al-Harousa">
-  <div class="hero-content">
-    <span class="eyebrow">Moroni · Depuis 2005</span>
-    <h1 class="hero-title">L'art d'habiter<br><em>vos espaces</em></h1>
-    <p class="hero-sub">Meubles, plomberie, quincaillerie, carrelage et décoration. Une entreprise familiale qui accompagne chaque projet, du salon au chantier, avec livraison et montage offerts.</p>
-    <div class="hero-actions">
-      <a href="#collections" class="btn btn-gold">Découvrir le catalogue</a>
-      <a href="#contact" class="btn btn-outline">Demander un devis</a>
+  <!-- ============ DOOR SCREEN ============ -->
+  <div id="door-screen">
+    <span class="door-eyebrow">AL-HAROUSA · Moroni · Depuis 2005</span>
+    <div class="door-scene" id="doorScene">
+      <div class="door-leaf l"></div>
+      <div class="door-leaf r"></div>
     </div>
+    <div class="door-hint">Poussez la porte</div>
+    <div class="door-skip" id="skipDoor">Passer l'intro</div>
   </div>
-  <div class="hero-scroll">Défiler</div>
-</section>
 
-<!-- ================= ABOUT ================= -->
-<section class="about section-pad" id="about">
-  <div class="wrap about-grid">
-    <div class="reveal">
-      <span class="eyebrow">Bienvenue chez Al-Harousa</span>
-      <p class="about-lead" style="margin-top:20px;">Depuis 2005, nous habillons vos maisons, aménageons vos lieux de travail et participons à la construction de vos plus beaux projets, <span class="gold">ici comme ailleurs.</span></p>
+  <!-- ============ TOUR ============ -->
+  <div id="tour">
+    <div class="veil" id="veil"></div>
+
+    <div class="room-topbar">
+      <div class="room-logo" id="logoHome">AL<span>-</span>HAROUSA</div>
+      <ul class="room-trail" id="roomTrail"></ul>
+      <button class="trail-toggle" id="trailToggle" aria-label="Menu des pièces">☰</button>
     </div>
-    <div class="reveal about-body">
-      <p>Entreprise familiale ancrée dans le quotidien des Comoriens, nous avons grandi à l'écoute de vos besoins, de vos goûts et de vos ambitions. Meubles de maison ou de bureau, plomberie, quincaillerie, carrelage, décoration&nbsp;: nous vous offrons bien plus que des produits.</p>
-      <p>Nous vous accompagnons dans chaque détail de votre aménagement, avec un service de livraison et montage offert, pour une installation sans contrainte. Parce que chaque espace mérite une attention particulière, faites confiance à une boutique qui connaît vos besoins — l'élégance, la durabilité et la fonctionnalité sont au cœur de notre vision.</p>
-      <div class="about-stats">
-        <div>
-          <div class="stat-num">20+</div>
-          <div class="stat-label">Années d'expérience</div>
-        </div>
-        <div>
-          <div class="stat-num">12</div>
-          <div class="stat-label">Univers &amp; catégories</div>
-        </div>
-        <div>
-          <div class="stat-num">100%</div>
-          <div class="stat-label">Livraison &amp; montage offerts</div>
-        </div>
-      </div>
+    <ul class="mobile-trail" id="mobileTrail"></ul>
+
+    <div class="room-backdrop" id="roomBackdrop">
+      <img id="roomImg" src="" alt="">
     </div>
-  </div>
-</section>
 
-<div class="wrap"><div class="divider"></div></div>
+    <button class="room-nav prev" id="navPrev" aria-label="Pièce précédente">←</button>
+    <button class="room-nav next" id="navNext" aria-label="Pièce suivante">→</button>
 
-<!-- ================= COLLECTIONS INTRO ================= -->
-<section class="band" id="collections">
-  <div class="wrap">
-    <span class="eyebrow" style="justify-content:center;">Catalogue Comores Expo 2026</span>
-    <h2 class="section-title">Nos Collections</h2>
-    <p class="band-note">Une sélection exclusive de mobilier disponible en pré-commande — l'idéal pour planifier votre projet à l'avance et garantir sa disponibilité.</p>
-  </div>
-</section>
-
-<!-- ================= CANAPES ================= -->
-<section class="section-pad" id="canapes" style="padding-top:40px;">
-  <div class="wrap">
-    <span class="eyebrow" id="canapes-eyebrow">Nos Canapés</span>
-    <h2 class="section-title" style="font-size:clamp(28px,4vw,42px);" id="canapes-title">Salons &amp; canapés</h2>
-  </div>
-  <div class="wrap">
-    <div class="grid-products reveal" id="grid-canapes"></div>
-    <p style="text-align:center;margin-top:26px;font-size:13px;color:var(--taupe);" id="canapes-note"></p>
-  </div>
-</section>
-
-<!-- ================= LIVINGS / TABLE BASSE ================= -->
-<section class="section-pad" style="padding-top:20px;">
-  <div class="wrap">
-    <div class="grid-products cols-2 reveal" id="grid-livings"></div>
-  </div>
-</section>
-
-<div class="wrap"><div class="divider"></div></div>
-
-<!-- ================= CHAMBRES ================= -->
-<section class="section-pad" id="chambres">
-  <div class="wrap">
-    <span class="eyebrow" id="chambres-eyebrow">Nos Chambres à Coucher</span>
-    <h2 class="section-title" style="font-size:clamp(28px,4vw,42px);" id="chambres-title">Chambres &amp; literie</h2>
-  </div>
-  <div class="wrap">
-    <div class="grid-products reveal" id="grid-chambres"></div>
-    <p style="text-align:center;margin-top:26px;font-size:13px;color:var(--taupe);" id="chambres-note"></p>
-  </div>
-</section>
-
-<div class="wrap"><div class="divider"></div></div>
-
-<!-- ================= SALLE A MANGER + CARRELAGE + TAPIS ================= -->
-<section class="section-pad">
-  <div class="wrap">
-    <span class="eyebrow" id="finitions-eyebrow">Salle à manger, sols &amp; textiles</span>
-    <h2 class="section-title" style="font-size:clamp(28px,4vw,42px);" id="finitions-title">Finitions &amp; art de la table</h2>
-  </div>
-  <div class="wrap">
-    <div class="grid-products reveal" id="grid-finitions"></div>
-  </div>
-</section>
-
-<!-- ================= SERVICES SUR DEVIS ================= -->
-<section class="services section-pad" id="services">
-  <div class="wrap">
-    <span class="eyebrow" id="services-eyebrow">Et bien plus encore</span>
-    <h2 class="section-title" style="font-size:clamp(28px,4vw,42px);" id="services-title">Services sur devis</h2>
-    <p class="band-note" style="margin-left:0;" id="services-note"></p>
-  </div>
-  <div class="wrap" style="margin-top:50px;">
-    <div class="services-grid reveal" id="grid-services"></div>
-  </div>
-</section>
-
-
-<!-- ================= PROMISE STRIP ================= -->
-<section class="wrap">
-  <div class="promise">
-    <div class="promise-item">
-      <div class="icon">✓</div>
-      <div><h5>Livraison offerte</h5><p>Partout où vous êtes</p></div>
+    <div class="room-content" id="roomContent">
+      <!-- injected per room -->
     </div>
-    <div class="promise-item">
-      <div class="icon">✓</div>
-      <div><h5>Montage inclus</h5><p>Installation sans contrainte</p></div>
-    </div>
-    <div class="promise-item">
-      <div class="icon">✓</div>
-      <div><h5>Précommande garantie</h5><p>Disponibilité assurée</p></div>
-    </div>
-    <div class="promise-item">
-      <div class="icon">✓</div>
-      <div><h5>Depuis 2005</h5><p>Entreprise familiale à Moroni</p></div>
-    </div>
-  </div>
-</section>
 
-<!-- ================= CONTACT ================= -->
-<section class="contact" id="contact">
-  <div class="contact-media">
-    <img src="contact.jpg" alt="Showroom Al-Harousa">
+    <div class="room-dots" id="roomDots"></div>
+    <div class="room-advance" id="roomAdvance">Avancer →</div>
   </div>
-  <div class="contact-panel">
-    <div class="wrap">
-      <span class="eyebrow">Vous avez un coup de cœur ?</span>
-      <div class="contact-grid" style="margin-top:24px;">
-        <div class="reveal">
-          <h2 class="section-title" style="font-size:clamp(30px,4vw,44px);">Contactez-nous</h2>
-          <p>Une question sur un modèle, une précommande ou un projet d'aménagement complet&nbsp;? Notre équipe vous répond rapidement.</p>
-          <ul class="contact-list">
-            <li><span class="label">Adresse</span><span class="value">Moroni, Ambassadeur — Comores</span></li>
-            <li><span class="label">Téléphone</span><a class="value" href="tel:+33746489456">+33 7 46 48 94 56</a></li>
-            <li><span class="label">Email</span><a class="value" href="mailto:magasinalharousa@gmail.com">magasinalharousa@gmail.com</a></li>
-            <li><span class="label">Instagram</span><a class="value" href="#" target="_blank" rel="noopener">@AL-HAROUSA</a></li>
-          </ul>
-        </div>
-        <div class="form-card reveal">
-          <h3>Demande de devis</h3>
-          <p>Remplissez ce formulaire, nous revenons vers vous sous 48h.</p>
-          <form id="quoteForm">
-            <div class="field">
-              <label for="name">Nom complet</label>
-              <input type="text" id="name" name="name" required>
-            </div>
-            <div class="field">
-              <label for="phone">Téléphone / WhatsApp</label>
-              <input type="tel" id="phone" name="phone" required>
-            </div>
-            <div class="field">
-              <label for="category">Catégorie</label>
-              <select id="category" name="category">
-                <option>Canapés</option>
-                <option>Livings &amp; tables basses</option>
-                <option>Chambres à coucher</option>
-                <option>Salle à manger</option>
-                <option>Carrelage</option>
-                <option>Tapis</option>
-                <option>Électroménager</option>
-                <option>Plomberie</option>
-                <option>Mobilier bureautique</option>
-                <option>Vaisselle</option>
-                <option>Toiture &amp; fer</option>
-                <option>Portes &amp; fenêtres</option>
-                <option>Autre projet</option>
-              </select>
-            </div>
-            <div class="field">
-              <label for="message">Votre demande</label>
-              <textarea id="message" name="message" placeholder="Décrivez votre projet…"></textarea>
-            </div>
-            <button type="submit" class="form-submit">Envoyer la demande</button>
-          </form>
-          <p class="form-note">Formulaire non connecté pour le moment — une intégration email sera ajoutée prochainement. En attendant, contactez-nous directement par téléphone ou email ci-contre.</p>
-        </div>
-      </div>
-    </div>
-  </div>
-</section>
 
-<footer>
-  <div class="wrap">
-    <div class="footer-row">
-      <div class="logo">AL<span>-</span>HAROUSA</div>
-      <ul class="footer-links">
-        <li><a href="#about">Maison</a></li>
-        <li><a href="#collections">Collections</a></li>
-        <li><a href="#services">Services</a></li>
-        <li><a href="#contact">Contact</a></li>
-      </ul>
-    </div>
-    <div class="footer-copy">© 2026 Al-Harousa — Moroni, Comores. Tous droits réservés.</div>
-  </div>
-</footer>
+</div>
 
 <script>
-  // ---------- Dynamic product rendering from data/products.json ----------
-  function escapeHtml(str){
-    if(str === null || str === undefined) return '';
-    return String(str).replace(/[&<>"']/g, m => ({'&':'&amp;','<':'&lt;','>':'&gt;','"':'&quot;',"'":'&#39;'}[m]));
-  }
+/* ======================================================
+   AL-HAROUSA — Visite immersive
+   ====================================================== */
 
-  function cardHTML(item){
-    const priceClass = (item.price && /sur devis/i.test(item.price)) ? 'price-tag devis' : 'price-tag';
-    return `
-      <div class="card">
-        <div class="card-media">
-          <img src="${escapeHtml(item.image)}" alt="${escapeHtml(item.title)} — Al-Harousa" loading="lazy">
-          ${item.price ? `<span class="${priceClass}">${escapeHtml(item.price)}</span>` : ''}
-        </div>
-        <div class="card-body">
-          <h3>${escapeHtml(item.title)}</h3>
-          <p>${escapeHtml(item.description)}</p>
-          <div class="card-foot"><span>${escapeHtml(item.footnote)}</span><a href="#contact" class="card-link">${escapeHtml(item.cta || 'Demander un devis')}</a></div>
-        </div>
-      </div>`;
-  }
+const $ = (s, r=document) => r.querySelector(s);
+const $$ = (s, r=document) => Array.from(r.querySelectorAll(s));
 
-  function serviceCellHTML(item, index){
-    const num = String(index + 1).padStart(2, '0');
+let PRODUCTS = null;
+let rooms = [];
+let currentIndex = 0;
+let isTransitioning = false;
+
+/* ---------- Load product data and build room config ---------- */
+async function loadData(){
+  const res = await fetch('products.json', {cache:'no-store'});
+  PRODUCTS = await res.json();
+  buildRooms();
+  renderTrail();
+  renderRoom(0, false);
+}
+
+function buildRooms(){
+  const s = PRODUCTS.sections;
+  const svc = PRODUCTS.services.items;
+
+  rooms = [
+    {
+      key:'salon',
+      name:'Salon',
+      eyebrow:'Première étape',
+      title:'Le salon',
+      desc:'Canapés, tables basses et compositions murales pour recevoir avec style.',
+      image:'hero.jpg',
+      items: [...s.canapes.items, ...s.livings.items].map(toCardData)
+    },
+    {
+      key:'chambre',
+      name:'Chambre',
+      eyebrow:'Deuxième étape',
+      title:'La chambre',
+      desc:'Lits, chevets et compositions pensés pour un repos serein.',
+      image:'chambre-1.jpg',
+      items: s.chambres.items.map(toCardData)
+    },
+    {
+      key:'salle-a-manger',
+      name:'Salle à manger',
+      eyebrow:'Troisième étape',
+      title:'La salle à manger',
+      desc:'Tables, chaises et buffets assortis pour vos réceptions — et tapis, carrelage pour habiller la pièce.',
+      image:'salle-a-manger.jpg',
+      items: [
+        ...s.finitions.items.filter(i => i.id === 'salle-a-manger').map(toCardData),
+        ...s.finitions.items.filter(i => i.id === 'tapis').map(toCardData)
+      ]
+    },
+    {
+      key:'salle-de-bain',
+      name:'Salle de bain',
+      eyebrow:'Quatrième étape',
+      title:'Salle de bain & plomberie',
+      desc:'Carrelage et installations sanitaires — chaque projet est unique, sur devis.',
+      image:null,
+      items: [
+        ...s.finitions.items.filter(i => i.id === 'carrelage').map(toCardData),
+        ...svc.filter(i => i.id === 'plomberie').map(toServiceCardData)
+      ]
+    },
+    {
+      key:'univers',
+      name:'Autres univers',
+      eyebrow:'Cinquième étape',
+      title:'Et bien plus encore',
+      desc:'Électroménager, mobilier bureautique, vaisselle, toiture et menuiserie — sur devis.',
+      image:null,
+      items: svc.filter(i => i.id !== 'plomberie').map(toServiceCardData)
+    },
+    {
+      key:'contact',
+      name:'Contact',
+      eyebrow:'Sortie',
+      title:'Vous avez un coup de cœur ?',
+      desc:'Contactez-nous pour une demande de devis ou toute question.',
+      image:'contact.jpg',
+      isContact:true
+    }
+  ];
+}
+
+function toCardData(item){
+  return {type:'product', image:item.image, price:item.price, title:item.title, description:item.description};
+}
+function toServiceCardData(item){
+  return {type:'service', title:item.title, description:item.description, partner:item.partner};
+}
+
+/* ---------- Render helpers ---------- */
+function escapeHtml(str){
+  if(str === null || str === undefined) return '';
+  return String(str).replace(/[&<>"']/g, m => ({'&':'&amp;','<':'&lt;','>':'&gt;','"':'&quot;',"'":'&#39;'}[m]));
+}
+
+function cardHTML(item){
+  if(item.type === 'service'){
     return `
-      <div class="service-cell">
-        <span class="num">${num}</span>
+      <div class="svc-card">
         <h4>${escapeHtml(item.title)}</h4>
-        <p>${escapeHtml(item.description)}${item.partner ? '<br><span class="partner">En partenariat</span>' : ''}</p>
+        <p>${escapeHtml(item.description)}</p>
+        ${item.partner ? '<span class="partner">En partenariat</span>' : ''}
       </div>`;
   }
+  const priceClass = (item.price && /sur devis/i.test(item.price)) ? 'p-price devis' : 'p-price';
+  return `
+    <div class="p-card">
+      <div class="p-card-media">
+        <img src="${escapeHtml(item.image)}" alt="${escapeHtml(item.title)}" loading="lazy">
+        ${item.price ? `<span class="${priceClass}">${escapeHtml(item.price)}</span>` : ''}
+      </div>
+      <div class="p-body">
+        <h4>${escapeHtml(item.title)}</h4>
+        <p>${escapeHtml(item.description)}</p>
+      </div>
+    </div>`;
+}
 
-  function renderSection(sectionKey, data){
-    const grid = document.getElementById('grid-' + sectionKey);
-    if(!grid || !data) return;
-    grid.innerHTML = (data.items || []).map(cardHTML).join('');
-    grid.classList.toggle('cols-2', data.columns === 2);
+function contactHTML(){
+  const c = PRODUCTS.site.contact;
+  return `
+    <div style="display:flex;gap:28px;flex-wrap:wrap;align-items:flex-end;">
+      <div class="contact-panel">
+        <h3>Demande de devis</h3>
+        <form id="quoteForm">
+          <div class="c-field"><label>Nom complet</label><input type="text" required></div>
+          <div class="c-field"><label>Téléphone / WhatsApp</label><input type="tel" required></div>
+          <div class="c-field"><label>Message</label><textarea placeholder="Décrivez votre projet…"></textarea></div>
+          <button type="submit" class="c-submit">Envoyer la demande</button>
+        </form>
+      </div>
+    </div>
+    <div class="contact-info">
+      <a href="tel:${c.phone.replace(/\s/g,'')}">${escapeHtml(c.phone)}</a>
+      <a href="mailto:${c.email}">${escapeHtml(c.email)}</a>
+      <span style="color:var(--taupe);font-size:13px;">${escapeHtml(c.address)}</span>
+    </div>
+  `;
+}
 
-    const eyebrowEl = document.getElementById(sectionKey + '-eyebrow');
-    if(eyebrowEl && data.eyebrow) eyebrowEl.textContent = data.eyebrow;
-    const titleEl = document.getElementById(sectionKey + '-title');
-    if(titleEl && data.title) titleEl.textContent = data.title;
-    const noteEl = document.getElementById(sectionKey + '-note');
-    if(noteEl) noteEl.textContent = data.note || '';
+function renderTrail(){
+  const trail = $('#roomTrail');
+  const mobileTrail = $('#mobileTrail');
+  trail.innerHTML = rooms.map((r,i) => `<li data-index="${i}" class="${i===currentIndex?'current':''}">${escapeHtml(r.name)}</li>`).join('');
+  mobileTrail.innerHTML = rooms.map((r,i) => `<li data-index="${i}" class="${i===currentIndex?'current':''}">${escapeHtml(r.name)}</li>`).join('');
+  $$('li', trail).forEach(li => li.addEventListener('click', () => goTo(parseInt(li.dataset.index,10))));
+  $$('li', mobileTrail).forEach(li => li.addEventListener('click', () => { goTo(parseInt(li.dataset.index,10)); mobileTrail.classList.remove('show'); }));
+}
+
+function renderDots(){
+  const dots = $('#roomDots');
+  dots.innerHTML = rooms.map((r,i) => `<span class="${i===currentIndex?'current':''}"></span>`).join('');
+}
+
+function renderRoom(index, animate=true){
+  const room = rooms[index];
+  const tour = $('#tour');
+  const img = $('#roomImg');
+  const backdrop = $('#roomBackdrop');
+  const content = $('#roomContent');
+  const advance = $('#roomAdvance');
+
+  tour.classList.remove('walking');
+
+  backdrop.classList.toggle('no-photo', !room.image);
+  if(room.image){
+    img.style.display = 'block';
+    img.src = room.image;
+    img.alt = room.title;
+  }else{
+    img.style.display = 'none';
   }
 
-  async function loadProducts(){
-    try{
-      const res = await fetch('products.json', {cache:'no-store'});
-      if(!res.ok) throw new Error('products.json introuvable');
-      const data = await res.json();
+  let cardsHtml = '';
+  if(room.isContact){
+    cardsHtml = contactHTML();
+  }else{
+    cardsHtml = `<div class="room-cards">${room.items.map(cardHTML).join('')}</div>`;
+  }
 
-      Object.entries(data.sections || {}).forEach(([key, section]) => {
-        renderSection(key, section);
+  content.innerHTML = `
+    <div class="room-heading">
+      <span class="room-eyebrow">${escapeHtml(room.eyebrow)}</span>
+      <h2 class="room-title">${escapeHtml(room.title)}</h2>
+      <p class="room-desc">${escapeHtml(room.desc)}</p>
+    </div>
+    ${cardsHtml}
+  `;
+
+  advance.textContent = index === rooms.length - 1 ? 'Revenir au salon ↺' : 'Avancer →';
+
+  $('#navPrev').disabled = index === 0;
+  $('#navNext').disabled = index === rooms.length - 1;
+
+  renderDots();
+  $$('#roomTrail li').forEach((li,i) => li.classList.toggle('current', i===index));
+  $$('#mobileTrail li').forEach((li,i) => li.classList.toggle('current', i===index));
+
+  if(room.isContact){
+    const form = $('#quoteForm');
+    if(form){
+      form.addEventListener('submit', e => {
+        e.preventDefault();
+        alert('Merci ! Le formulaire n\'est pas encore connecté. Contactez-nous directement par téléphone ou email.');
       });
-
-      const servicesGrid = document.getElementById('grid-services');
-      if(servicesGrid && data.services){
-        servicesGrid.innerHTML = (data.services.items || []).map(serviceCellHTML).join('');
-        const eyebrowEl = document.getElementById('services-eyebrow');
-        if(eyebrowEl && data.services.eyebrow) eyebrowEl.textContent = data.services.eyebrow;
-        const titleEl = document.getElementById('services-title');
-        if(titleEl && data.services.title) titleEl.textContent = data.services.title;
-        const noteEl = document.getElementById('services-note');
-        if(noteEl) noteEl.textContent = data.services.note || '';
-      }
-
-      // Re-observe newly injected reveal containers (already-registered parents work automatically,
-      // but ensure grids that were empty at initial IO setup still animate in)
-      document.querySelectorAll('.reveal:not(.in)').forEach(el => io.observe(el));
-    }catch(err){
-      console.error('Erreur de chargement des produits :', err);
     }
   }
-</script>
 
-<script>
-  // Header scroll state
-  const header = document.getElementById('siteHeader');
-  window.addEventListener('scroll', () => {
-    header.classList.toggle('scrolled', window.scrollY > 40);
-  });
-
-  // Mobile nav toggle
-  const burger = document.getElementById('burgerBtn');
-  const nav = document.getElementById('mainNav');
-  burger.addEventListener('click', () => {
-    const open = nav.style.display === 'block';
-    nav.style.display = open ? 'none' : 'block';
-    if(!open){
-      nav.style.position='absolute';
-      nav.style.top='100%';
-      nav.style.left='0';
-      nav.style.right='0';
-      nav.style.background='rgba(33,31,28,0.97)';
-      nav.style.padding='20px 32px';
-      nav.querySelector('ul').style.flexDirection='column';
-      nav.querySelector('ul').style.gap='18px';
-    }
-  });
-
-  // Reveal on scroll
-  const io = new IntersectionObserver((entries)=>{
-    entries.forEach(e=>{
-      if(e.isIntersecting){ e.target.classList.add('in'); io.unobserve(e.target); }
+  // trigger walk-in animation
+  requestAnimationFrame(() => {
+    requestAnimationFrame(() => {
+      tour.classList.add('walking');
     });
-  }, {threshold:0.12});
-  document.querySelectorAll('.reveal').forEach(el=>io.observe(el));
-
-  // Quote form (no backend yet — placeholder handling)
-  document.getElementById('quoteForm').addEventListener('submit', function(e){
-    e.preventDefault();
-    alert('Merci ! Le formulaire n\'est pas encore connecté. Contactez-nous directement par téléphone ou email pour votre demande.');
   });
+}
 
-  loadProducts();
+function goTo(index){
+  if(isTransitioning || index === currentIndex || index < 0 || index >= rooms.length) return;
+  isTransitioning = true;
+  const veil = $('#veil');
+  veil.classList.add('show');
+  setTimeout(() => {
+    currentIndex = index;
+    renderRoom(currentIndex);
+    setTimeout(() => {
+      veil.classList.remove('show');
+      isTransitioning = false;
+    }, 60);
+  }, 420);
+}
+
+function next(){
+  if(currentIndex === rooms.length - 1){ goTo(0); return; }
+  goTo(currentIndex + 1);
+}
+function prev(){ goTo(currentIndex - 1); }
+
+/* ---------- Door interaction ---------- */
+function openDoor(){
+  const scene = $('#doorScene');
+  const screen = $('#door-screen');
+  const tour = $('#tour');
+  if(scene.classList.contains('open')) return;
+  scene.classList.add('open');
+  tour.classList.add('active');
+  setTimeout(() => {
+    screen.classList.add('hidden');
+  }, 500);
+}
+
+$('#doorScene').addEventListener('click', openDoor);
+$('#skipDoor').addEventListener('click', (e) => { e.stopPropagation(); openDoor(); });
+
+$('#roomAdvance').addEventListener('click', next);
+$('#navNext').addEventListener('click', next);
+$('#navPrev').addEventListener('click', prev);
+$('#logoHome').addEventListener('click', () => goTo(0));
+$('#trailToggle').addEventListener('click', () => $('#mobileTrail').classList.toggle('show'));
+
+document.addEventListener('keydown', (e) => {
+  if($('#door-screen') && !$('#door-screen').classList.contains('hidden')){
+    if(e.key === 'Enter' || e.key === ' ') openDoor();
+    return;
+  }
+  if(e.key === 'ArrowRight') next();
+  if(e.key === 'ArrowLeft') prev();
+});
+
+loadData();
 </script>
 
 </body>
