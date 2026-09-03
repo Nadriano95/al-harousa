@@ -67,34 +67,17 @@
   #door-screen{
     position:absolute;
     inset:0;
-    display:flex;
-    flex-direction:column;
-    align-items:center;
-    justify-content:center;
-    background:radial-gradient(ellipse at 50% 30%, #221d16 0%, #0d0c0a 70%);
     z-index:50;
-    transition:opacity 0.8s ease 0.4s, visibility 0.8s ease 0.4s;
+    transition:opacity 0.35s ease, visibility 0.35s ease;
   }
   #door-screen.hidden{
     opacity:0;
     visibility:hidden;
     pointer-events:none;
   }
-  .door-eyebrow{
-    font-family:var(--display);
-    font-size:11px;
-    letter-spacing:0.32em;
-    text-transform:uppercase;
-    color:var(--gold);
-    margin-bottom:28px;
-    opacity:0.85;
-    text-align:center;
-  }
   .door-scene{
-    position:relative;
-    height:min(64vh, 700px);
-    width:auto;
-    aspect-ratio:700/1150;
+    position:absolute;
+    inset:0;
     perspective:2400px;
   }
   .door-leaf{
@@ -102,42 +85,90 @@
     top:0;
     width:50%;
     height:100%;
-    background-image:url('door.svg');
-    background-size:200% 100%;
+    background-size:cover;
     background-repeat:no-repeat;
     transition:transform 1.4s cubic-bezier(.45,0,.2,1), filter 1.4s ease;
     cursor:pointer;
   }
-  .door-leaf.l{left:0; background-position:left top; transform-origin:left center;}
-  .door-leaf.r{left:50%; background-position:right top; transform-origin:right center;}
+  .door-leaf.l{left:0; background-image:url('door-left.svg'); background-position:right center; transform-origin:left center;}
+  .door-leaf.r{left:50%; background-image:url('door-right.svg'); background-position:left center; transform-origin:right center;}
   .door-scene.open .door-leaf.l{transform:rotateY(-112deg); filter:brightness(0.35);}
   .door-scene.open .door-leaf.r{transform:rotateY(112deg); filter:brightness(0.35);}
 
+  .door-overlay{
+    position:absolute;
+    inset:0;
+    z-index:2;
+    display:flex;
+    flex-direction:column;
+    align-items:center;
+    justify-content:space-between;
+    padding:44px 32px;
+    pointer-events:none;
+  }
+  .door-overlay::before{
+    content:'';
+    position:absolute;
+    top:0;left:0;right:0;
+    height:22%;
+    background:linear-gradient(180deg, rgba(13,12,10,0.75) 0%, rgba(13,12,10,0) 100%);
+    z-index:-1;
+  }
+  .door-overlay::after{
+    content:'';
+    position:absolute;
+    bottom:0;left:0;right:0;
+    height:34%;
+    background:linear-gradient(0deg, rgba(13,12,10,0.8) 0%, rgba(13,12,10,0) 100%);
+    z-index:-1;
+  }
+  .door-overlay > *{pointer-events:auto;}
+  .door-eyebrow{
+    font-family:var(--display);
+    font-size:11px;
+    letter-spacing:0.32em;
+    text-transform:uppercase;
+    color:var(--gold);
+    text-align:center;
+    text-shadow:0 2px 12px rgba(0,0,0,0.8);
+  }
+  .door-cta{
+    font-family:var(--display);
+    font-size:13px;
+    letter-spacing:0.16em;
+    text-transform:uppercase;
+    background:var(--gold);
+    color:var(--black);
+    padding:18px 44px;
+    border:none;
+    cursor:pointer;
+    transition:background .25s ease, transform .25s ease, letter-spacing .25s ease;
+    box-shadow:0 8px 30px rgba(0,0,0,0.5);
+  }
+  .door-cta:hover{background:var(--gold-soft); letter-spacing:0.2em;}
+  .door-cta:active{transform:scale(0.97);}
+  .door-tagline{
+    font-size:13px;
+    color:var(--white-dim);
+    text-shadow:0 2px 12px rgba(0,0,0,0.9);
+    letter-spacing:0.02em;
+  }
   .door-hint{
-    margin-top:30px;
     font-family:var(--display);
     font-size:12px;
     letter-spacing:0.14em;
     text-transform:uppercase;
     color:var(--white-dim);
-    display:flex;
-    align-items:center;
-    gap:10px;
+    text-shadow:0 2px 12px rgba(0,0,0,0.8);
     animation:doorPulse 2.2s ease-in-out infinite;
-  }
-  .door-hint::before, .door-hint::after{
-    content:'';
-    width:22px;height:1px;
-    background:var(--gold);
+    pointer-events:none;
   }
   @keyframes doorPulse{
     0%,100%{opacity:0.55;}
     50%{opacity:1;}
   }
   .door-skip{
-    position:absolute;
-    bottom:28px;
-    right:28px;
+    align-self:flex-end;
     font-family:var(--display);
     font-size:11px;
     letter-spacing:0.1em;
@@ -146,8 +177,49 @@
     border-bottom:1px solid transparent;
     padding-bottom:2px;
     transition:color .2s ease, border-color .2s ease;
+    text-shadow:0 2px 8px rgba(0,0,0,0.8);
   }
   .door-skip:hover{color:var(--gold); border-color:var(--gold);}
+
+  /* ============ REVEAL SCREEN (behind the door) ============ */
+  #reveal-screen{
+    position:absolute;
+    inset:0;
+    z-index:40;
+    overflow:hidden;
+    opacity:1;
+    transition:opacity 0.7s ease;
+  }
+  #reveal-screen.hidden{
+    opacity:0;
+    visibility:hidden;
+    pointer-events:none;
+  }
+  .reveal-img{
+    position:absolute;
+    inset:0;
+    width:100%;
+    height:100%;
+    object-fit:cover;
+    transform:scale(1.08);
+  }
+  .reveal-scrim{
+    position:absolute;
+    inset:0;
+    background:linear-gradient(180deg, rgba(13,12,10,0.45) 0%, rgba(13,12,10,0.55) 55%, rgba(13,12,10,0.85) 100%);
+  }
+  .reveal-content{
+    position:relative;
+    z-index:2;
+    height:100%;
+    display:flex;
+    flex-direction:column;
+    align-items:center;
+    justify-content:center;
+    gap:22px;
+    padding:32px;
+  }
+  .reveal-content .door-eyebrow{margin-bottom:2px;}
 
   /* ============ TOUR ============ */
   #tour{
@@ -491,7 +563,6 @@
     .svc-card{width:170px;}
   }
   @media (max-width:600px){
-    .door-scene{width:78vw;}
     .room-title{font-size:clamp(28px,8vw,44px);}
     .room-desc{font-size:13.5px;}
     .room-content{padding:0 18px 22px;}
@@ -531,13 +602,26 @@
 
   <!-- ============ DOOR SCREEN ============ -->
   <div id="door-screen">
-    <span class="door-eyebrow">AL-HAROUSA · Moroni · Depuis 2005</span>
     <div class="door-scene" id="doorScene">
       <div class="door-leaf l"></div>
       <div class="door-leaf r"></div>
     </div>
-    <div class="door-hint">Poussez la porte</div>
-    <div class="door-skip" id="skipDoor">Passer l'intro</div>
+    <div class="door-overlay">
+      <span class="door-eyebrow">AL-HAROUSA · Moroni · Depuis 2005</span>
+      <span class="door-hint">— Cliquez sur la porte —</span>
+      <div class="door-skip" id="skipDoor">Passer l'intro</div>
+    </div>
+  </div>
+
+  <!-- ============ REVEAL (behind the door) ============ -->
+  <div id="reveal-screen" class="hidden">
+    <img src="hero.jpg" alt="Salon Al-Harousa" class="reveal-img">
+    <div class="reveal-scrim"></div>
+    <div class="reveal-content">
+      <span class="door-eyebrow">Bienvenue chez Al-Harousa</span>
+      <button class="door-cta" id="discoverBtn">Découvrir</button>
+      <span class="door-tagline">La visite commence par le salon</span>
+    </div>
   </div>
 
   <!-- ============ TOUR ============ -->
@@ -817,17 +901,25 @@ function prev(){ goTo(currentIndex - 1); }
 function openDoor(){
   const scene = $('#doorScene');
   const screen = $('#door-screen');
-  const tour = $('#tour');
+  const revealScreen = $('#reveal-screen');
   if(scene.classList.contains('open')) return;
   scene.classList.add('open');
-  tour.classList.add('active');
   setTimeout(() => {
     screen.classList.add('hidden');
-  }, 500);
+    revealScreen.classList.remove('hidden');
+  }, 1350);
+}
+
+function enterTour(){
+  const revealScreen = $('#reveal-screen');
+  const tour = $('#tour');
+  revealScreen.classList.add('hidden');
+  tour.classList.add('active');
 }
 
 $('#doorScene').addEventListener('click', openDoor);
 $('#skipDoor').addEventListener('click', (e) => { e.stopPropagation(); openDoor(); });
+$('#discoverBtn').addEventListener('click', (e) => { e.stopPropagation(); enterTour(); });
 
 $('#roomAdvance').addEventListener('click', next);
 $('#navNext').addEventListener('click', next);
@@ -838,6 +930,10 @@ $('#trailToggle').addEventListener('click', () => $('#mobileTrail').classList.to
 document.addEventListener('keydown', (e) => {
   if($('#door-screen') && !$('#door-screen').classList.contains('hidden')){
     if(e.key === 'Enter' || e.key === ' ') openDoor();
+    return;
+  }
+  if($('#reveal-screen') && !$('#reveal-screen').classList.contains('hidden')){
+    if(e.key === 'Enter' || e.key === ' ') enterTour();
     return;
   }
   if(e.key === 'ArrowRight') next();
